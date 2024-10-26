@@ -1,4 +1,4 @@
-package test;
+package backend;
 
 public class Paciente {
     private String sexo;

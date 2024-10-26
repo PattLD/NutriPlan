@@ -1,4 +1,6 @@
-package test;
+package interface_graf;
+
+import backend.Paciente;
 
 import javax.swing.*;  // Pacote para os componentes da GUI (JFrame, JButton, JLabel, etc.)
 import java.awt.*;     // Pacote para layouts e manipulação de gráficos
@@ -17,7 +19,7 @@ public class Frame1 extends JFrame {
 	private double altura;
 	
     
-	Frame1(){
+	public Frame1(){
 		int numLabel = 20; 
 	    int numPanel = 10; 
 	    int numButton = 5; 
@@ -49,7 +51,7 @@ public class Frame1 extends JFrame {
             button[i] = new JButton();
             button[i].setPreferredSize(new Dimension(150, 30)); 
         }
-        button[0].setText("Cadastrar Paciente");
+        button[0].setText("Cadastrar paciente");
         
         JLabel label[] = new JLabel[numLabel];
         for (int i = 0; i < numLabel; i++) {

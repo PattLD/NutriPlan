@@ -1,4 +1,4 @@
-package test;
+package interface_graf;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

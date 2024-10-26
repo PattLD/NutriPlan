@@ -1,4 +1,6 @@
-package test;
+package backend;
+
+import interface_graf.Frame1;
 
 import java.util.Scanner;
 
