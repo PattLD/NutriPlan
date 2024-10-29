@@ -333,6 +333,22 @@ public class Frame1 extends JFrame {
 
         button[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                // Inclusão de dados
+                nome = txtdook[0].getText();
+                sexo = (String) gender.getSelectedItem();
+                idade = Integer.parseInt(txtdook[2].getText());
+                peso = Double.parseDouble(txtdook[3].getText());
+                altura = Double.parseDouble(txtdook[4].getText());
+                objetivo = txtdook[5].getText();
+                atividade = (String) exerciseFrequency.getSelectedItem();
+
+                Paciente paciente=new Paciente(sexo, nome, idade, peso, altura, atividade, objetivo);
+
+                paciente.mostrarDados();
+
+                System.out.println("Taxa metabólica basal (TMB): " + paciente.calcularBasal());
+                System.out.println("Gasto energético total: " + paciente.calcularFatorAtividade());
+                System.out.println("IMC do paciente: " + paciente.calcularIMC());
 
                 abrirFrame2();
 
