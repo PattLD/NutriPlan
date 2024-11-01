@@ -1,12 +1,14 @@
-package backend;
+package nutriplan.model;
 
 import java.util.Scanner;
 
-class PlanoAlimentar {
+class Plano {
     private int caloriasNecessarias;
     private int caloriasConsumidas;
 
-    public PlanoAlimentar(int caloriasNecessarias){
+    private Paciente paciente;
+
+    public Plano(int caloriasNecessarias){
         this.caloriasNecessarias = caloriasNecessarias;
         this.caloriasConsumidas = 0;
     }

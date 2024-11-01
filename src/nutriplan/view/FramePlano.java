@@ -1,4 +1,4 @@
-package interface_graf;
+package nutriplan.view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,21 +8,16 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import static interface_graf.Style.*;
+import static nutriplan.view.Style.*;
 
-public class Frame2 extends JFrame {
-
-    int numLabel = 30;
-    int numPanel = 10;
-    int numButton = 5;
-    int numTxtdook = 6;
+public class FramePlano extends JFrame {
 
     String alimento = "";
     int quantidade = 0;
     int calorias = 0;
     private JPanel mainPanel;
 
-    public Frame2(){
+    public FramePlano(){
 
         this.setTitle("NutriPlan");
         this.setSize(700, 650);
@@ -31,7 +26,7 @@ public class Frame2 extends JFrame {
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
 
-        ImageIcon icon = new ImageIcon("src/resouce/icon.png");
+        ImageIcon icon = new ImageIcon("src/images/icon.png");
         this.setIconImage(icon.getImage());
 
         ////////////////////////
@@ -434,9 +429,9 @@ public class Frame2 extends JFrame {
         button[3].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                Frame1 frame1 = new Frame1();
-                frame1.setVisible(true);
-                Frame2.this.setVisible(false);
+                MainFrame mainFrame = new MainFrame();
+                mainFrame.setVisible(true);
+                FramePlano.this.setVisible(false);
 
             }
         });
