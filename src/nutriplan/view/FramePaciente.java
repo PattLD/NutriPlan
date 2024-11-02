@@ -64,8 +64,7 @@ public class FramePaciente extends JFrame {
 
     }
 
-// ELEMENTOS
-
+    // PANEL
     public JPanel logoPanel(){
         ImageIcon imagemLogo = getimagemLogo(0.20);
         JLabel labelLogo = new JLabel(imagemLogo);
@@ -73,20 +72,12 @@ public class FramePaciente extends JFrame {
         //PAINEL DO LOGO
         logoPanel.setBackground(transparente);
         //layout
-        logoPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbcDados = new GridBagConstraints();
-        gbcDados.insets = new Insets(1, 1, 1, 1);
-        gbcDados.weightx = 0.5;
-        gbcDados.gridwidth = 1;
-        gbcDados.gridheight = 1;
-        gbcDados.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
-        gbcDados.anchor = GridBagConstraints.CENTER;
+        logoPanel.setLayout(new BorderLayout());
 
         logoPanel.add(labelLogo);
 
         return logoPanel;
     }
-
     public JPanel mainPanel(){
         //PAINEL CENTRAL
         mainPanel.setBackground(verde);
@@ -134,7 +125,6 @@ public class FramePaciente extends JFrame {
 
         return mainPanel;
     }
-
     public JPanel formsPanel(){
         // PAINEL FORMS
         formsPanel.setBackground(verdeClaro);
@@ -268,7 +258,6 @@ public class FramePaciente extends JFrame {
 
         return formsPanel;
     }
-
     public JPanel backPanel(){
         backPanel.setBackground(transparente);
         backPanel.setLayout(new BorderLayout());
@@ -279,6 +268,7 @@ public class FramePaciente extends JFrame {
         return backPanel;
     }
 
+    // OUTROS ELEMENTOS
     public void label(){
         for (int i = 0; i < numLabel; i++) {
             label[i] = new JLabel();
@@ -303,7 +293,6 @@ public class FramePaciente extends JFrame {
         label[7].setText("Nivel de atividade");
         label[8].setText("Objetivo:");
     }
-
     public void txtdook(){
         for (int i=0;i<numTxtdook;i++){
             txtdook[i] = new JFormattedTextField();
@@ -327,7 +316,6 @@ public class FramePaciente extends JFrame {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
     }
-
     public void button(){
         for (int i = 0; i < numButton; i++) {
             button[i] = new JButton();
@@ -337,21 +325,19 @@ public class FramePaciente extends JFrame {
         button[1].setText("Cadastro");
     }
 
-
+    // COMBOBOX
     public JComboBox gender(){
         gender.setSelectedIndex(0);
 
         return gender;
     }
-
     public JComboBox exerciseFrequency(){
         exerciseFrequency.setSelectedIndex(0);
 
         return exerciseFrequency;
     }
 
-// AÇÕES
-
+    // AÇÕES
     public void inicializarComponentes(){
         txtdook();
         label();
@@ -367,7 +353,7 @@ public class FramePaciente extends JFrame {
 
     }
 
-    //CONVERSÃO DE DADOS
+    // CONVERSÃO DE DADOS
     public Double converterDouble(JFormattedTextField txt){
         String doubleText = txt.getText().replace(",", "."); // Substitui a vírgula pelo ponto
         try {
@@ -394,6 +380,7 @@ public class FramePaciente extends JFrame {
         return date;
     }
 
+    // BOTOES
     public void cadastrar(){
         button[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -417,7 +404,6 @@ public class FramePaciente extends JFrame {
             }
         });
     }
-
     public void voltar() {
         button[0].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

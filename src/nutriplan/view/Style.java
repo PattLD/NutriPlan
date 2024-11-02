@@ -90,4 +90,26 @@ public class Style {
             return null;
         }
     }
+
+    public static GridBagConstraints configurarConstraints(GridBagConstraints gbc, int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, Insets insets) {
+        gbc.gridx = gridx;
+        gbc.gridy = gridy;
+        gbc.gridwidth = gridwidth;
+        gbc.gridheight = gridheight;
+        gbc.weightx = weightx;
+        gbc.weighty = weighty;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = insets;
+        return gbc;
+    }
+    public static GridBagConstraints configurarConstraints(GridBagConstraints gbc, int gridx, int gridy, int gridwidth, int gridheight, Insets insets) {
+        gbc.gridx = gridx;
+        gbc.gridy = gridy;
+        gbc.gridwidth = gridwidth;
+        gbc.gridheight = gridheight;
+        gbc.insets = insets;
+        return gbc;
+    }
+
 }
