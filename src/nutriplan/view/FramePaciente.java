@@ -86,42 +86,22 @@ public class FramePaciente extends JFrame {
         //layout
         mainPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcCentral = new GridBagConstraints();
-        gbcCentral.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
-        //gbcCentral.anchor = GridBagConstraints.CENTER;
-        gbcCentral.insets = new Insets(5, 20, 5, 5);
 
         // GRID DO PAINEL CENTRAL
 
-        gbcCentral.weightx = 1;
-
         // logo
-        gbcCentral.gridx = 0;
-        gbcCentral.gridy = 0;
-        gbcCentral.weighty = 0.08;
-        gbcCentral.insets = new Insets(5, 5, 0, 5);
-        mainPanel.add(logoPanel, gbcCentral);
+        mainPanel.add(logoPanel, Style.configurarConstraints(gbcCentral,0,0,1,0.08,new Insets(5, 5, 0, 5)));
 
         // "montagem do plano alimentar"
-        gbcCentral.gridx = 0;
-        gbcCentral.gridy = 1;
-        gbcCentral.weighty = 0.01;
-        gbcCentral.insets = new Insets(5, 5, 0, 5);
-        mainPanel.add(label[0], gbcCentral);
+        mainPanel.add(label[0], Style.configurarConstraints(gbcCentral,0,1,1,0.01,new Insets(5, 5, 0, 5)));
 
         //imput de alimentos
-        gbcCentral.gridx = 0;
-        gbcCentral.gridy = 2;
-        gbcCentral.weighty = 0.95;
-        gbcCentral.insets = new Insets(0, 5, 5, 5);
-        mainPanel.add(formsPanel, gbcCentral);
+        mainPanel.add(formsPanel, Style.configurarConstraints(gbcCentral,0,2,1,0.95,new Insets(0, 5, 5, 5)));
 
         gbcCentral.insets = new Insets(5, 5, 5, 5);
 
         //voltar
-        gbcCentral.gridx = 0;
-        gbcCentral.gridy = 3;
-        gbcCentral.weighty = 0.01;
-        mainPanel.add(backPanel, gbcCentral);
+        mainPanel.add(backPanel, Style.configurarConstraints(gbcCentral,0,3,1,0.01,new Insets(5, 5, 5, 5)));
 
         return mainPanel;
     }
@@ -135,126 +115,51 @@ public class FramePaciente extends JFrame {
                 loweredbevel,
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         GridBagConstraints gbcForms = new GridBagConstraints();
-        gbcForms.insets = new Insets(1, 5, 1, 5);
-        gbcForms.gridwidth = 1;
-        gbcForms.gridheight = 1;
-        gbcForms.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
-        gbcForms.anchor = GridBagConstraints.WEST;
 
         // GRID DO PAINEL DADOS
 
+        Insets insetsCima = new Insets(5, 5, 2, 5);
+        Insets insetsBaixo = new Insets(2, 5, 5, 5);
 
         //nome
-        gbcForms.gridx = 0;
-        gbcForms.gridy = 0;
-        gbcForms.gridwidth = 3;
-        gbcForms.insets = new Insets(5, 5, 2, 5);
-        formsPanel.add(label[1], gbcForms);
+        formsPanel.add(label[1], Style.configurarConstraints(gbcForms,0,0,3,1,insetsCima));
         //
-        gbcForms.gridx = 0;
-        gbcForms.gridy = 1;
-        gbcForms.gridwidth = 3;
-        gbcForms.insets = new Insets(2, 5, 5, 5);
-        formsPanel.add(txtdook[0], gbcForms);
+        formsPanel.add(txtdook[0], Style.configurarConstraints(gbcForms,0,1,3,1,insetsBaixo));
 
         //cpf
-        gbcForms.gridx = 0;
-        gbcForms.gridy = 2;
-        gbcForms.gridwidth = 1;
-        gbcForms.weightx = 0.40;
-        gbcForms.insets = new Insets(5, 5, 2, 5);
-        formsPanel.add(label[2], gbcForms);
+        formsPanel.add(label[2], Style.configurarConstraints(gbcForms,0,2,1,1, 0.40, 0, insetsCima));
         //
-        gbcForms.gridx = 0;
-        gbcForms.gridy = 3;
-        gbcForms.gridwidth = 1;
-        gbcForms.insets = new Insets(2, 5, 5, 5);
-        formsPanel.add(txtdook[1], gbcForms);
+        formsPanel.add(txtdook[1], Style.configurarConstraints(gbcForms,0,3,1,1,insetsBaixo));
 
         //sexo
-        gbcForms.gridx = 1;
-        gbcForms.gridy = 2;
-        gbcForms.gridwidth = 1;
-        gbcForms.weightx = 0.30;
-        gbcForms.insets = new Insets(5, 5, 2, 5);
-        formsPanel.add(label[3], gbcForms);
+        formsPanel.add(label[3], Style.configurarConstraints(gbcForms,1,2,1,1, 0.30, 0, insetsCima));
         //
-        gbcForms.gridx = 1;
-        gbcForms.gridy = 3;
-        gbcForms.gridwidth = 1;
-        gbcForms.insets = new Insets(2, 5, 5, 5);
-        formsPanel.add(gender, gbcForms);
+        formsPanel.add(gender, Style.configurarConstraints(gbcForms,1,3,1,1,insetsBaixo));
 
         //data de nascimento
-        gbcForms.gridx = 2;
-        gbcForms.gridy = 2;
-        gbcForms.gridwidth = 1;
-        gbcForms.weightx = 0.20;
-        gbcForms.insets = new Insets(5, 5, 2, 5);
-        formsPanel.add(label[4], gbcForms);
+        formsPanel.add(label[4], Style.configurarConstraints(gbcForms,2,2,1,1, 0.20, 0, insetsCima));
         //
-        gbcForms.gridx = 2;
-        gbcForms.gridy = 3;
-        gbcForms.gridwidth = 1;
-        gbcForms.insets = new Insets(2, 5, 5, 5);
-        formsPanel.add(txtdook[2], gbcForms);
+        formsPanel.add(txtdook[2], Style.configurarConstraints(gbcForms,2,3,1,1,insetsBaixo));
 
         //altura
-        gbcForms.gridx = 0;
-        gbcForms.gridy = 4;
-        gbcForms.gridwidth = 1;
-        gbcForms.weightx = 0.40;
-        gbcForms.insets = new Insets(5, 5, 2, 5);
-        formsPanel.add(label[5], gbcForms);
+        formsPanel.add(label[5], Style.configurarConstraints(gbcForms,0,4,1,1, 0.40, 0, insetsCima));
         //
-        gbcForms.gridx = 0;
-        gbcForms.gridy = 5;
-        gbcForms.gridwidth = 1;
-        gbcForms.insets = new Insets(2, 5, 5, 5);
-        formsPanel.add(txtdook[3], gbcForms);
+        formsPanel.add(txtdook[3], Style.configurarConstraints(gbcForms,0,5,1,1,insetsBaixo));
 
         //peso
-        gbcForms.gridx = 1;
-        gbcForms.gridy = 4;
-        gbcForms.gridwidth = 1;
-        gbcForms.weightx = 0.30;
-        gbcForms.insets = new Insets(5, 5, 2, 5);
-        formsPanel.add(label[6], gbcForms);
+        formsPanel.add(label[6], Style.configurarConstraints(gbcForms,1,4,1,1, 0.30, 0, insetsCima));
         //
-        gbcForms.gridx = 1;
-        gbcForms.gridy = 5;
-        gbcForms.gridwidth = 1;
-        gbcForms.insets = new Insets(2, 5, 5, 5);
-        formsPanel.add(txtdook[4], gbcForms);
+        formsPanel.add(txtdook[4], Style.configurarConstraints(gbcForms,1,5,1,1,insetsBaixo));
 
         //nivel de atividade
-        gbcForms.gridx = 2;
-        gbcForms.gridy = 4;
-        gbcForms.gridwidth = 1;
-        gbcForms.weightx = 0.20;
-        gbcForms.insets = new Insets(5, 5, 2, 5);
-        formsPanel.add(label[7], gbcForms);
+        formsPanel.add(label[7], Style.configurarConstraints(gbcForms,2,4,1,1, 0.20, 0, insetsCima));
         //
-        gbcForms.gridx = 2;
-        gbcForms.gridy = 5;
-        gbcForms.gridwidth = 1;
-        gbcForms.insets = new Insets(2, 5, 5, 5);
-        formsPanel.add(exerciseFrequency, gbcForms);
+        formsPanel.add(exerciseFrequency, Style.configurarConstraints(gbcForms,2,5,1,1,insetsBaixo));
 
         //objetivo
-        gbcForms.gridx = 0;
-        gbcForms.gridy = 6;
-        gbcForms.gridwidth = 3;
-        gbcForms.weightx = 1;
-        gbcForms.insets = new Insets(5, 5, 2, 5);
-        formsPanel.add(label[8], gbcForms);
+        formsPanel.add(label[8], Style.configurarConstraints(gbcForms,0,6,3,1, 1, 0, insetsCima));
         //
-        gbcForms.gridx = 0;
-        gbcForms.gridy = 7;
-        gbcForms.gridwidth = 3;
-        gbcForms.weighty = 0.5;
-        gbcForms.insets = new Insets(2, 5, 5, 5);
-        formsPanel.add(txtObjetivo, gbcForms);
+        formsPanel.add(txtObjetivo, Style.configurarConstraints(gbcForms,0,7,3,1,1,1,insetsBaixo));
 
         return formsPanel;
     }

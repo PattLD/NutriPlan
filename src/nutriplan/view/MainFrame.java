@@ -71,23 +71,9 @@ public class MainFrame extends JFrame {
         mainPanel.setBackground(verde);
         mainPanel.setSize(700, 650);
         mainPanel.setBorder(PADDING);
-        //layout
-        mainPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbcCentral = new GridBagConstraints();
-        gbcCentral.fill = GridBagConstraints.BOTH;
-        gbcCentral.insets = new Insets(5, 20, 5, 5);
+        mainPanel.setLayout(new BorderLayout());
 
-        // GRID DO PAINEL CENTRAL
-
-        gbcCentral.weightx = 1;
-
-        // logo
-        gbcCentral.gridx = 0;
-        gbcCentral.gridy = 0;
-        gbcCentral.weighty = 0.8;
-        gbcCentral.insets = new Insets(5, 5, 0, 5);
-        mainPanel.add(logoPanel, gbcCentral);
-
+        mainPanel.add(logoPanel, BorderLayout.CENTER);
         return mainPanel;
     }
 
@@ -97,17 +83,9 @@ public class MainFrame extends JFrame {
 
         //PAINEL DO LOGO
         logoPanel.setBackground(transparente);
-        //layout
-        logoPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbcDados = new GridBagConstraints();
-        gbcDados.insets = new Insets(1, 1, 1, 1);
-        gbcDados.weightx = 0.5;
-        gbcDados.gridwidth = 1;
-        gbcDados.gridheight = 1;
-        gbcDados.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
-        gbcDados.anchor = GridBagConstraints.CENTER;
+        logoPanel.setLayout(new BorderLayout());
 
-        logoPanel.add(labelLogo);
+        logoPanel.add(labelLogo, BorderLayout.CENTER);
 
         return logoPanel;
     }
