@@ -3,23 +3,18 @@ package nutriplan.model;
 import nutriplan.view.*;
 
 import java.util.Scanner;
-
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import java.sql.Connection;
-
 import java.sql.ResultSet;
-
 import java.sql.Statement;
-
 import java.sql.PreparedStatement;
 
 public class Main {
     public static void main(String[] args) {
         //String URL = "jdbc:postgresql://localhost:5432/listatelefonica";
-        String URL = "jdbc:mysql://localhost:3306/seuBancoDeDados?useSSL=false";
-        String USER = "";//usuario
+        String URL = "jdbc:mysql://localhost:3306/nutricionista?useSSL=false";
+        String USER = "root";//usuario
         String PASSWORD = "";//senha
         Connection conn = null;
         try{
@@ -44,6 +39,7 @@ public class Main {
                 ex.printStackTrace();
             }
 
+        MainFrame mainFrame = new MainFrame();
 
 
 
@@ -52,12 +48,11 @@ public class Main {
 
 
 
-
-
+/*
 
     	//FramePaciente frame1 = new FramePaciente();
         //FramePlano frame2 = new FramePlano();
-        MainFrame mainFrame = new MainFrame();
+
     	
     	Scanner ler = new Scanner(System.in);
 
@@ -70,10 +65,9 @@ public class Main {
         plano.montarDieta();
 
         System.out.println("Dieta finalizada!");
+*/
 
 
-
-
-
+        }
     }
 }

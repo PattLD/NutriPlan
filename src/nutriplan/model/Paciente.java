@@ -124,5 +124,9 @@ public class Paciente {
         }
     }
 
+    public void cadastrarPaciente(Paciente paciente){
+
+    }
+
 }
 
