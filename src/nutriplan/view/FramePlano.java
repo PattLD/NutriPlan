@@ -12,28 +12,52 @@ import static nutriplan.view.Style.*;
 
 public class FramePlano extends JFrame {
 
-    String alimento = "";
-    int quantidade = 0;
-    int calorias = 0;
-    private JPanel mainPanel;
+    String alimentoComida = "";
+    int gramasComida = 0;
+    int kcal100 = 0;
+
+    JPanel mainPanel = new JPanel();
+    JPanel dadosPanel = new JPanel();
+    JPanel imputPanel = new JPanel();
+    JPanel buttonPanel = new JPanel();
+    JPanel backPanel = new JPanel();
+
+    String [] colunas = {"Nome do alimento", "Quantidade (g)", "Kcal/100g"};
+    DefaultTableModel model = new DefaultTableModel(colunas, 0);
+    JTable tabela = new JTable(model);
+    JScrollPane scrollPane = new JScrollPane(tabela);
+
+    JLabel[] label = new JLabel[numLabel];
+    TitledBorder[] title = new TitledBorder[numLabel];
+    JFormattedTextField[] txtdook = new JFormattedTextField[numTxtdook];
+    JTextArea txtObjetivo = new JTextArea();
+    JButton[] button = new JButton[numButton];
+
 
     public FramePlano(){
 
+        // Elementos
+        inicializarComponentes();
+
+        // Botões
+
+        voltar();
+
+        // Frame
         this.setTitle("NutriPlan");
         this.setSize(700, 650);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
+        this.setIconImage(getIcon().getImage());
+        this.add(mainPanel, BorderLayout.CENTER);
+        this.setVisible(true);
 
-        ImageIcon icon = new ImageIcon("src/images/icon.png");
-        this.setIconImage(icon.getImage());
+    }
 
-        ////////////////////////
-        //PAINEIS
-
-        //PAINEL CENTRAL
-        JPanel mainPanel = new JPanel();
+    // PANEL
+    public JPanel mainPanel(){
         mainPanel.setOpaque(true);
         mainPanel.setBackground(verde);
         mainPanel.setSize(700, 650);
@@ -47,176 +71,6 @@ public class FramePlano extends JFrame {
         gbcCentral.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
         gbcCentral.anchor = GridBagConstraints.CENTER;
         gbcCentral.insets = new Insets(5, 5, 5, 5);
-
-        //PAINEL DE DADOS
-        JPanel dadosPanel = new JPanel();
-        dadosPanel.setBackground(verdeClaro);
-        dadosPanel.setBorder(loweredbevel);
-        //dadosPanel.setPreferredSize(new Dimension(400, 160));
-        //layout
-        dadosPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbcDados = new GridBagConstraints();
-        gbcDados.insets = new Insets(1, 1, 1, 1);
-        gbcDados.weightx = 0.5;
-        gbcDados.gridwidth = 1;
-        gbcDados.gridheight = 1;
-        gbcDados.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
-        gbcDados.anchor = GridBagConstraints.CENTER;
-
-        // PAINEL IMPUT
-        JPanel imputPanel = new JPanel();
-        imputPanel.setOpaque(true);
-        imputPanel.setBackground(verdeClaro);
-        imputPanel.setBorder(loweredbevel);
-        //imputPanel.setPreferredSize(new Dimension(400, 100));
-        //layout
-        imputPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbcImput = new GridBagConstraints();
-        gbcImput.insets = new Insets(1, 5, 1, 5);
-        gbcImput.weightx = 0.5;
-        gbcImput.gridwidth = 1;
-        gbcImput.gridheight = 1;
-        gbcImput.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
-        gbcImput.anchor = GridBagConstraints.CENTER;
-
-        // PAINEL BOTAO
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setOpaque(false);
-        buttonPanel.setBackground(transparente);
-        //buttonPanel.setPreferredSize(new Dimension(400, 30));
-        buttonPanel.setLayout(new FlowLayout());
-
-        // PAINEL TABELA
-
-        String [] colunas = {"Nome do alimento", "Quantidade (g)", "Kcal/100g"};
-        DefaultTableModel model = new DefaultTableModel(colunas, 0);
-        JTable tabela = new JTable(model);
-        JScrollPane scrollPane = new JScrollPane(tabela);
-        scrollPane.setBackground(Color.RED);
-        scrollPane.setMinimumSize(new Dimension(400, 170));
-
-        // PAINEL Voltar
-        JPanel backPane = new JPanel();
-        backPane.setBackground(transparente);
-        //backPane.setPreferredSize(new Dimension(400, 30));
-        backPane.setLayout(new FlowLayout());
-
-
-
-        ////////////////////////
-        //LABELS
-        JLabel label[] = new JLabel[numLabel];
-        for (int i = 0; i < numLabel; i++) {
-            label[i] = new JLabel();
-            label[i].setFont(FONT_ITALIC_10);
-            label[i].setHorizontalAlignment(SwingConstants.LEFT);
-        }
-
-
-        label[0].setText("Montagem do Plano Alimentar");
-        label[0].setForeground(Color.WHITE);  // Cor do texto
-        label[0].setFont(FONT_BOLD_12);
-        label[0].setHorizontalAlignment(SwingConstants.CENTER);
-        label[0].setOpaque(true);
-        label[0].setBackground(verdeEscuro);
-        label[0].setBorder(loweredbevel);
-
-        //LABEL - DADOS
-        //titulos
-
-        TitledBorder[] title = new TitledBorder[numLabel];
-        for (int i = 0; i < numLabel; i++) {
-            title[i] = BorderFactory.createTitledBorder(etched, "");
-            title[i].setTitleFont(FONT_BOLD_10);
-        }
-        //renomeando
-        title[0].setTitle("Nome");
-        title[1].setTitle("Sexo");
-        title[2].setTitle("Idade");
-        title[3].setTitle("IMC");
-        title[4].setTitle("Peso");
-        title[5].setTitle("Altura");
-        title[6].setTitle("Objetivo");
-        title[7].setTitle("Nivel de atividade");
-        title[8].setTitle("Taxa Metabólica Basal (TMB)");
-        title[9].setTitle("Gasto Energético Total (GET)");
-        //labels
-        for(int i=0;i<10;i++) {
-            int j = i+1;
-            label[j].setBorder(title[i]);
-        }
-        label[1].setText("Nome");
-        label[2].setText("Sexo");
-        label[3].setText("Idade");
-        label[4].setText("IMC");
-        label[5].setText("Peso");
-        label[6].setText("Altura:");
-        label[7].setText("Objetivo:");
-        label[8].setText("Nivel de atividade:");
-        label[9].setText("Taxa Metabólica Basal (TMB):");
-        label[10].setText("Gasto Energético Total (GET):");
-
-        label[11].setText("REGULAR");
-
-
-        //LABELS - IMPUT
-        label[12].setText("ALIMENTO");
-        label[12].setFont(FONT_BOLD_12);
-        label[12].setOpaque(true);
-        label[12].setBackground(verde);
-        label[12].setHorizontalAlignment(SwingConstants.CENTER);
-        label[12].setBorder(raisedbevel);
-
-        label[13].setText("PLANO");
-        label[13].setFont(FONT_BOLD_12);
-        label[13].setOpaque(true);
-        label[13].setBackground(verde);
-        label[13].setHorizontalAlignment(SwingConstants.CENTER);
-        label[13].setBorder(raisedbevel);
-
-        label[14].setText("Nome");
-        label[15].setText("Calorias adicionadas");
-        label[16].setText("Quantidade (g)");
-        label[17].setText("Calorias restantes");
-        label[18].setText("kcal/100g");
-        label[19].setText("Calorias necessárias");
-
-        label[20].setText("Dados do Paciente");
-        label[20].setForeground(Color.WHITE);  // Cor do texto
-        label[20].setFont(FONT_BOLD_12);
-        label[20].setHorizontalAlignment(SwingConstants.CENTER);
-        label[20].setOpaque(true);
-        label[20].setBackground(verdeEscuro);
-        label[20].setBorder(loweredbevel);
-
-        ////////////////////////
-        // BOTOES
-        JButton button[] = new JButton[numButton];
-        for (int i = 0; i < numButton; i++) {
-            button[i] = new JButton();
-            //button[i].setPreferredSize(new Dimension(150, 20));
-        }
-        button[0].setText("Adicionar");
-        button[1].setText("Remover");
-        button[2].setText("Atualizar");
-        button[3].setText("Voltar");
-
-        ////////////////////////
-        // CAIXA DE TEXTO
-        JTextField txtdook[] = new JTextField[numTxtdook];
-        for (int i=0;i<numTxtdook;i++){
-            txtdook[i] = new JTextField();
-            //txtdook[i].setPreferredSize(new Dimension(50, 30));
-        }
-
-        txtdook[1].setEditable(false);
-        txtdook[1].setEditable(false);
-
-        txtdook[3].setEditable(false);
-        txtdook[3].setEditable(false);
-
-        txtdook[5].setEditable(false);
-        txtdook[5].setEditable(false);
 
         ////////////////////////
         // GRID DO PAINEL CENTRAL
@@ -267,7 +121,23 @@ public class FramePlano extends JFrame {
         gbcCentral.gridx = 0;
         gbcCentral.gridy = 6;
         gbcCentral.weighty = 0.05;
-        mainPanel.add(backPane, gbcCentral);
+        mainPanel.add(backPanel, gbcCentral);
+
+        return mainPanel;
+    }
+    public JPanel dadosPanel(){
+        dadosPanel.setBackground(verdeClaro);
+        dadosPanel.setBorder(loweredbevel);
+        //dadosPanel.setPreferredSize(new Dimension(400, 160));
+        //layout
+        dadosPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcDados = new GridBagConstraints();
+        gbcDados.insets = new Insets(1, 1, 1, 1);
+        gbcDados.weightx = 0.5;
+        gbcDados.gridwidth = 1;
+        gbcDados.gridheight = 1;
+        gbcDados.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
+        gbcDados.anchor = GridBagConstraints.CENTER;
 
         ////////////////////////
         // GRID DO PAINEL DADOS
@@ -333,6 +203,23 @@ public class FramePlano extends JFrame {
         gbcDados.gridy = 3;
         gbcDados.gridwidth = 2;
         dadosPanel.add(label[10], gbcDados);
+
+        return dadosPanel;
+    }
+    public JPanel imputPanel(){
+        imputPanel.setOpaque(true);
+        imputPanel.setBackground(verdeClaro);
+        imputPanel.setBorder(loweredbevel);
+        //imputPanel.setPreferredSize(new Dimension(400, 100));
+        //layout
+        imputPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbcImput = new GridBagConstraints();
+        gbcImput.insets = new Insets(1, 5, 1, 5);
+        gbcImput.weightx = 0.5;
+        gbcImput.gridwidth = 1;
+        gbcImput.gridheight = 1;
+        gbcImput.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
+        gbcImput.anchor = GridBagConstraints.CENTER;
 
         ////////////////////////
         // GRID DO PAINEL IMPUT
@@ -419,13 +306,162 @@ public class FramePlano extends JFrame {
         gbcImput.weightx = 0.9;
         imputPanel.add(txtdook[5],gbcImput);
 
+        return imputPanel;
+    }
+    public JPanel buttonPanel(){
+        buttonPanel.setOpaque(false);
+        buttonPanel.setBackground(transparente);
+        //buttonPanel.setPreferredSize(new Dimension(400, 30));
+        buttonPanel.setLayout(new FlowLayout());
+
         ////////////////////////
         // GRID DO PAINEL BUTTON
         buttonPanel.add(button[0]);
         buttonPanel.add(button[1]);
         buttonPanel.add(button[2]);
 
-        backPane.add(button[3], FlowLayout.LEFT);
+        return buttonPanel;
+    }
+    public JScrollPane scrollPane(){
+        scrollPane.setBackground(Color.RED);
+        scrollPane.setMinimumSize(new Dimension(400, 170));
+
+        return scrollPane;
+    }
+    public JPanel backPanel(){
+        backPanel.setBackground(transparente);
+        //backPane.setPreferredSize(new Dimension(400, 30));
+        backPanel.setLayout(new FlowLayout());
+        backPanel.add(button[3], FlowLayout.LEFT);
+
+        return backPanel;
+    }
+
+    // OUTROS ELEMENTOS
+    public void label(){
+        //INICIANDO
+        for (int i = 0; i < numLabel; i++) {
+            label[i] = new JLabel();
+            label[i].setFont(FONT_ITALIC_10);
+            label[i].setHorizontalAlignment(SwingConstants.LEFT);
+        }
+
+        for (int i = 0; i < numLabel; i++) {
+            title[i] = BorderFactory.createTitledBorder(etched, "");
+            title[i].setTitleFont(FONT_BOLD_10);
+        }
+
+        //TITULOS
+        title[0].setTitle("Nome");
+        title[1].setTitle("Sexo");
+        title[2].setTitle("Idade");
+        title[3].setTitle("IMC");
+        title[4].setTitle("Peso");
+        title[5].setTitle("Altura");
+        title[6].setTitle("Objetivo");
+        title[7].setTitle("Nivel de atividade");
+        title[8].setTitle("Taxa Metabólica Basal (TMB)");
+        title[9].setTitle("Gasto Energético Total (GET)");
+        //labels
+        for(int i=0;i<10;i++) {
+            int j = i+1;
+            label[j].setBorder(title[i]);
+        }
+
+        label[1].setText("Nome");
+        label[2].setText("Sexo");
+        label[3].setText("Idade");
+        label[4].setText("IMC");
+        label[5].setText("Peso");
+        label[6].setText("Altura:");
+        label[7].setText("Objetivo:");
+        label[8].setText("Nivel de atividade:");
+        label[9].setText("Taxa Metabólica Basal (TMB):");
+        label[10].setText("Gasto Energético Total (GET):");
+
+        //OUTROS LABEL
+
+        label[0].setText("Montagem do Plano Alimentar");
+        label[0].setForeground(Color.WHITE);  // Cor do texto
+        label[0].setFont(FONT_BOLD_12);
+        label[0].setHorizontalAlignment(SwingConstants.CENTER);
+        label[0].setOpaque(true);
+        label[0].setBackground(verdeEscuro);
+        label[0].setBorder(loweredbevel);
+
+        label[11].setText("REGULAR");
+
+        label[12].setText("ALIMENTO");
+        label[12].setFont(FONT_BOLD_12);
+        label[12].setOpaque(true);
+        label[12].setBackground(verde);
+        label[12].setHorizontalAlignment(SwingConstants.CENTER);
+        label[12].setBorder(raisedbevel);
+
+        label[13].setText("PLANO");
+        label[13].setFont(FONT_BOLD_12);
+        label[13].setOpaque(true);
+        label[13].setBackground(verde);
+        label[13].setHorizontalAlignment(SwingConstants.CENTER);
+        label[13].setBorder(raisedbevel);
+
+        label[14].setText("Nome");
+        label[15].setText("Calorias adicionadas");
+        label[16].setText("Quantidade (g)");
+        label[17].setText("Calorias restantes");
+        label[18].setText("kcal/100g");
+        label[19].setText("Calorias necessárias");
+
+        label[20].setText("Dados do Paciente");
+        label[20].setForeground(Color.WHITE);  // Cor do texto
+        label[20].setFont(FONT_BOLD_12);
+        label[20].setHorizontalAlignment(SwingConstants.CENTER);
+        label[20].setOpaque(true);
+        label[20].setBackground(verdeEscuro);
+        label[20].setBorder(loweredbevel);
+    }
+    public void txtdook(){
+        for (int i=0;i<numTxtdook;i++){
+            txtdook[i] = new JFormattedTextField();
+            //txtdook[i].setPreferredSize(new Dimension(50, 30));
+        }
+
+        txtdook[1].setEditable(false);
+        txtdook[1].setEditable(false);
+
+        txtdook[3].setEditable(false);
+        txtdook[3].setEditable(false);
+
+        txtdook[5].setEditable(false);
+        txtdook[5].setEditable(false);
+    }
+    public void button(){
+        for (int i = 0; i < numButton; i++) {
+            button[i] = new JButton();
+            //button[i].setPreferredSize(new Dimension(150, 20));
+        }
+        button[0].setText("Adicionar");
+        button[1].setText("Remover");
+        button[2].setText("Atualizar");
+        button[3].setText("Voltar");
+    }
+
+    // AÇÕES
+    public void inicializarComponentes(){
+        txtdook();
+        label();
+        button();
+
+        mainPanel = mainPanel();
+        dadosPanel = dadosPanel();
+        imputPanel = imputPanel();
+        buttonPanel = buttonPanel();
+        scrollPane = scrollPane();
+        backPanel = backPanel();
+    }
+
+    // BOTOES
+    public void voltar(){
         button[3].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -435,13 +471,5 @@ public class FramePlano extends JFrame {
 
             }
         });
-
-        this.add(mainPanel, BorderLayout.CENTER);
-
-        this.setVisible(true);
-
     }
-
-
-
 }

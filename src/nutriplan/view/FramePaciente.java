@@ -1,5 +1,6 @@
 package nutriplan.view;
 
+import nutriplan.controller.PacienteController;
 import nutriplan.model.Paciente;
 
 import javax.swing.*;  // Pacote para os componentes da GUI (JFrame, JButton, JLabel, etc.)
@@ -27,14 +28,16 @@ public class FramePaciente extends JFrame {
     private double TMB;
     private double GET;
 
+    private String txtErro;
+
     JPanel mainPanel = new JPanel();
     JPanel logoPanel = new JPanel();
     JPanel formsPanel = new JPanel();
     JPanel backPanel = new JPanel();
-    JLabel label[] = new JLabel[numLabel];
-    JFormattedTextField txtdook[] = new JFormattedTextField[numTxtdook];
+    JLabel[] label = new JLabel[numLabel];
+    JFormattedTextField[] txtdook = new JFormattedTextField[numTxtdook];
     JTextArea txtObjetivo = new JTextArea();
-    JButton button[] = new JButton[numButton];
+    JButton[] button = new JButton[numButton];
 
     String[] genderStrings = { "SELECIONE", "Feminino", "Masculino" };
     JComboBox gender = new JComboBox(genderStrings);
@@ -48,8 +51,11 @@ public class FramePaciente extends JFrame {
         inicializarComponentes();
 
         // Botões
-        cadastrar();
+
         voltar();
+        consultar();
+        limpar();
+        salvar();
 
         // Frame
         this.setTitle("NutriPlan");
@@ -165,10 +171,12 @@ public class FramePaciente extends JFrame {
     }
     public JPanel backPanel(){
         backPanel.setBackground(transparente);
-        backPanel.setLayout(new BorderLayout());
+        backPanel.setLayout(new FlowLayout());
 
-        backPanel.add(button[0], BorderLayout.LINE_START);
-        backPanel.add(button[1], BorderLayout.LINE_END);
+        backPanel.add(button[0]);
+        backPanel.add(button[1]);
+        backPanel.add(button[2]);
+        backPanel.add(button[3]);
 
         return backPanel;
     }
@@ -227,7 +235,9 @@ public class FramePaciente extends JFrame {
             //button[i].setPreferredSize(new Dimension(150, 20));
         }
         button[0].setText("Voltar");
-        button[1].setText("Cadastro");
+        button[1].setText("Consultar");
+        button[2].setText("Limpar");
+        button[3].setText("Salvar");
     }
 
     // COMBOBOX
@@ -257,58 +267,18 @@ public class FramePaciente extends JFrame {
         exerciseFrequency = exerciseFrequency();
 
     }
-
-    // CONVERSÃO DE DADOS
-    public Double converterDouble(JFormattedTextField txt){
-        String doubleText = txt.getText().replace(",", "."); // Substitui a vírgula pelo ponto
-        try {
-            return Double.parseDouble(doubleText);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Valor inválido: " + doubleText, "Erro", JOptionPane.ERROR_MESSAGE);
-            return 0.0;
-        }
-    }
-    public LocalDate converterLocalDate(JFormattedTextField txt){
-        String dateString = txt.getText();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = null;
-
-        try {
-            date = LocalDate.parse(dateString, formatter);
-            System.out.println("Data convertida: " + date);
-        } catch (DateTimeParseException ex) {
-            System.out.println("Data inválida: " + dateString);
-            JOptionPane.showMessageDialog(this, "Data inválida: " + dateString, "Erro", JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
-
-        return date;
+    public void limparTela(){
+        txtdook[0].setText("");
+        txtdook[1].setText("");
+        gender.setSelectedIndex(0);
+        txtdook[2].setText("");
+        txtdook[3].setText("");
+        txtdook[4].setText("");
+        exerciseFrequency.setSelectedIndex(0);
+        txtObjetivo.setText("");
     }
 
     // BOTOES
-    public void cadastrar(){
-        button[1].addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Inclusão de dados
-                nome = txtdook[0].getText();
-                CPF = txtdook[1].getText();
-                sexo = (String) gender.getSelectedItem();
-                dataNascimento = converterLocalDate(txtdook[2]);
-                altura = converterDouble(txtdook[3]);
-                peso = converterDouble(txtdook[4]);
-                atividade = (String) exerciseFrequency.getSelectedItem();
-                objetivo = txtObjetivo.getText();
-
-                try {
-                    Paciente paciente = new Paciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, objetivo);
-                    paciente.mostrarDados();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(FramePaciente.this, "Erro ao cadastrar paciente: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-                }
-
-            }
-        });
-    }
     public void voltar() {
         button[0].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -318,5 +288,47 @@ public class FramePaciente extends JFrame {
             }
         });
     }
+    public void consultar() {
+        button[1].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+    public void limpar() {
+        button[2].addActionListener(e -> limparTela());
+    }
+    public void salvar(){
+        button[3].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Inclusão de dados
+                PacienteController pacienteController = new PacienteController();
+
+                nome = txtdook[0].getText();
+                CPF = txtdook[1].getText();
+                sexo = (String) gender.getSelectedItem();
+                dataNascimento = pacienteController.converterLocalDate(txtdook[2]);
+                altura = pacienteController.converterDouble(txtdook[3]);
+                peso = pacienteController.converterDouble(txtdook[4]);
+                atividade = (String) exerciseFrequency.getSelectedItem();
+                objetivo = txtObjetivo.getText();
+
+                try {
+                    boolean sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, objetivo);
+                    if(sucesso){
+                        JOptionPane.showMessageDialog(null,"O paciente foi cadastrado com sucesso!");
+                        limparTela();
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Os campos não foram preenchidos corretamente.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,"Erro: " + ex.getMessage());
+                }
+
+            }
+        });
+    }
+
+
 
 }
