@@ -1,15 +1,18 @@
 package nutriplan.model;
 
-class Plano {
+public class Plano {
     private int kcalNecessarias;
     private int kcalAdicionado;
 
     private String nomeComida;
-    private int gramasComida;
-    private int kcal100;
-    private int kcalComida;
+    private double gramasComida;
+    private double kcal100;
+    private double kcalComida;
 
     private Paciente paciente;
+
+    public Plano(String nomeComida, double gramasComida, double kcal100, double kcalComida) {
+    }
 
     //GETTERS
     public int getKcalNecessarias() {
@@ -22,13 +25,13 @@ class Plano {
     public String getNomeComida() {
         return nomeComida;
     }
-    public int getGramasComida() {
+    public double getGramasComida() {
         return gramasComida;
     }
-    public int getKcal100() {
+    public double getKcal100() {
         return kcal100;
     }
-    public int getKcalComida() {
+    public double getKcalComida() {
         return kcalComida;
     }
     public Paciente getPaciente() {
@@ -45,13 +48,13 @@ class Plano {
     public void setNomeComida(String nomeComida) {
         this.nomeComida = nomeComida;
     }
-    public void setGramasComida(int gramasComida) {
+    public void setGramasComida(double gramasComida) {
         this.gramasComida = gramasComida;
     }
-    public void setKcal100(int kcal100) {
+    public void setKcal100(double kcal100) {
         this.kcal100 = kcal100;
     }
-    public void setKcalComida(int kcalComida) {
+    public void setKcalComida(double kcalComida) {
         this.kcalComida = kcalComida;
     }
     public void setPaciente(Paciente paciente) {

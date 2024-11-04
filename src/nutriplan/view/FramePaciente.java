@@ -1,5 +1,6 @@
 package nutriplan.view;
 
+import nutriplan.controller.Conversão;
 import nutriplan.controller.PacienteController;
 import nutriplan.model.Paciente;
 
@@ -307,9 +308,9 @@ public class FramePaciente extends JFrame {
                 nome = txtdook[0].getText();
                 CPF = txtdook[1].getText();
                 sexo = (String) gender.getSelectedItem();
-                dataNascimento = pacienteController.converterLocalDate(txtdook[2]);
-                altura = pacienteController.converterDouble(txtdook[3]);
-                peso = pacienteController.converterDouble(txtdook[4]);
+                dataNascimento = Conversão.converterLocalDate(txtdook[2]);
+                altura = Conversão.converterDouble(txtdook[3]);
+                peso = Conversão.converterDouble(txtdook[4]);
                 atividade = (String) exerciseFrequency.getSelectedItem();
                 objetivo = txtObjetivo.getText();
 

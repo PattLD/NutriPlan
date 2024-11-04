@@ -1,5 +1,8 @@
 package nutriplan.view;
 
+import nutriplan.controller.Conversão;
+import nutriplan.controller.PlanoController;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +15,10 @@ import static nutriplan.view.Style.*;
 
 public class FramePlano extends JFrame {
 
-    String alimentoComida = "";
-    int gramasComida = 0;
-    int kcal100 = 0;
+    String nomeComida = "";
+    double gramasComida = 0;
+    double kcal100 = 0;
+    double kcalComida = 0;
 
     JPanel mainPanel = new JPanel();
     JPanel dadosPanel = new JPanel();
@@ -41,6 +45,10 @@ public class FramePlano extends JFrame {
 
         // Botões
 
+        adicionar();
+        limpar();
+        remover();
+        atualizar();
         voltar();
 
         // Frame
@@ -262,7 +270,7 @@ public class FramePlano extends JFrame {
         gbcImput.weightx = 0.9;
         imputPanel.add(txtdook[1],gbcImput);
 
-        //quantidade
+        //gramas
         gbcImput.gridx = 0;
         gbcImput.gridy = 2;
         gbcImput.weightx = 0.1;
@@ -319,6 +327,7 @@ public class FramePlano extends JFrame {
         buttonPanel.add(button[0]);
         buttonPanel.add(button[1]);
         buttonPanel.add(button[2]);
+        buttonPanel.add(button[3]);
 
         return buttonPanel;
     }
@@ -332,7 +341,7 @@ public class FramePlano extends JFrame {
         backPanel.setBackground(transparente);
         //backPane.setPreferredSize(new Dimension(400, 30));
         backPanel.setLayout(new FlowLayout());
-        backPanel.add(button[3], FlowLayout.LEFT);
+        backPanel.add(button[4], FlowLayout.LEFT);
 
         return backPanel;
     }
@@ -441,9 +450,10 @@ public class FramePlano extends JFrame {
             //button[i].setPreferredSize(new Dimension(150, 20));
         }
         button[0].setText("Adicionar");
-        button[1].setText("Remover");
-        button[2].setText("Atualizar");
-        button[3].setText("Voltar");
+        button[1].setText("Limpar");
+        button[2].setText("Remover");
+        button[3].setText("Atualizar");
+        button[4].setText("Voltar");
     }
 
     // AÇÕES
@@ -459,10 +469,64 @@ public class FramePlano extends JFrame {
         scrollPane = scrollPane();
         backPanel = backPanel();
     }
+    public void coletarDados(){
+        nomeComida = txtdook[0].getText();
+        gramasComida = Conversão.converterDouble(txtdook[2]);
+        kcal100 = Conversão.converterDouble(txtdook[4]);
+        kcalComida = (gramasComida/100) * kcal100;
+
+    }
+    public void limparTela(){
+        txtdook[0].setText("");
+        txtdook[2].setText("");
+        txtdook[4].setText("");
+    }
 
     // BOTOES
-    public void voltar(){
+    public void adicionar(){
+        button[0].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                coletarDados();
+
+                try {
+                    boolean sucesso = PlanoController.cadastrarPlano(nomeComida,gramasComida,kcal100,kcalComida);
+                    if(sucesso){
+                        JOptionPane.showMessageDialog(null,"A comida foi cadastrado com sucesso!");
+                        limparTela();
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Os campos não foram preenchidos corretamente.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,"Erro: " + ex.getMessage());
+                }
+
+            }
+        });
+    }
+    public void limpar(){
+        button[1].addActionListener(e -> limparTela());
+    }
+    public void remover(){
+        button[2].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+
+
+            }
+        });
+    }
+    public void atualizar(){
         button[3].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+
+
+            }
+        });
+    }
+    public void voltar(){
+        button[4].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 MainFrame mainFrame = new MainFrame();

@@ -22,25 +22,5 @@ public class PacienteController {
 
     }
 
-    public static Double converterDouble(JFormattedTextField txt){
-        String doubleText = txt.getText().replace(",", "."); // Substitui a vírgula pelo ponto
-        try {
-            return Double.parseDouble(doubleText);
-        } catch (NumberFormatException e) {
-            return 0.0;
-        }
-    }
-    public static LocalDate converterLocalDate(JFormattedTextField txt){
-        String dateString = txt.getText();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = null;
 
-        try{
-            date = LocalDate.parse(dateString, formatter);
-        } catch (DateTimeParseException ex) {
-            return null;
-        }
-
-        return date;
-    }
 }
