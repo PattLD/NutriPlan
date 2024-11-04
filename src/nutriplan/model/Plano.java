@@ -1,5 +1,9 @@
 package nutriplan.model;
 
+import nutriplan.dao.ExceptionDAO;
+import nutriplan.dao.PacienteDAO;
+import nutriplan.dao.PlanoDAO;
+
 public class Plano {
     private int kcalNecessarias;
     private int kcalAdicionado;
@@ -12,6 +16,10 @@ public class Plano {
     private Paciente paciente;
 
     public Plano(String nomeComida, double gramasComida, double kcal100, double kcalComida) {
+        this.nomeComida = nomeComida;
+        this.gramasComida = gramasComida;
+        this.kcal100 = kcal100;
+        this.kcalComida = kcalComida;
     }
 
     //GETTERS
@@ -61,13 +69,17 @@ public class Plano {
         this.paciente = paciente;
     }
 
-    public void cadastrarPlano(Plano plano){
-
+    //METODOS
+    public static double calcularKcalComida(double gramasComida, double kcal100) {
+        double kcal= (gramasComida/100) * kcal100;
+        return kcal;
     }
 
-    public void calcularKcalNecessarias(){
-
+    public void cadastrarPlano(Plano plano) throws ExceptionDAO {
+        new PlanoDAO().cadastrarPlano(plano);
     }
+
+
 
 //    public void montarDieta() {
 //        while (kcalAdicionado < kcalNecessarias) {

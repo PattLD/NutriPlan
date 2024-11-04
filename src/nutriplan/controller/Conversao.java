@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class Conversão {
+public class Conversao {
     public static Double converterDouble(JFormattedTextField txt){
         String doubleText = txt.getText().replace(",", ".");
         try {

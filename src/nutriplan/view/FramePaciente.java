@@ -1,6 +1,6 @@
 package nutriplan.view;
 
-import nutriplan.controller.Conversão;
+import nutriplan.controller.Conversao;
 import nutriplan.controller.PacienteController;
 import nutriplan.model.Paciente;
 
@@ -8,8 +8,6 @@ import javax.swing.*;  // Pacote para os componentes da GUI (JFrame, JButton, JL
 import java.awt.*;     // Pacote para layouts e manipulação de gráficos
 import java.awt.event.*;  // Pacote para manipulação de eventos (ActionListener)
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import static nutriplan.view.Style.*;
 
@@ -23,7 +21,6 @@ public class FramePaciente extends JFrame {
     private double peso;
 	private String atividade;
     private String objetivo;
-
     private int idade;
     private double IMC;
     private double TMB;
@@ -308,14 +305,19 @@ public class FramePaciente extends JFrame {
                 nome = txtdook[0].getText();
                 CPF = txtdook[1].getText();
                 sexo = (String) gender.getSelectedItem();
-                dataNascimento = Conversão.converterLocalDate(txtdook[2]);
-                altura = Conversão.converterDouble(txtdook[3]);
-                peso = Conversão.converterDouble(txtdook[4]);
+                dataNascimento = Conversao.converterLocalDate(txtdook[2]);
+                altura = Conversao.converterDouble(txtdook[3]);
+                peso = Conversao.converterDouble(txtdook[4]);
                 atividade = (String) exerciseFrequency.getSelectedItem();
                 objetivo = txtObjetivo.getText();
 
+                idade = Paciente.calcularIdade(dataNascimento);
+                IMC = Paciente.calcularIMC(altura, peso);
+                TMB = Paciente.calcularTMB(sexo,altura,peso,idade);
+                GET = Paciente.calcularGET(atividade,TMB);
+
                 try {
-                    boolean sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, objetivo);
+                    boolean sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, objetivo, idade, IMC, TMB, GET);
                     if(sucesso){
                         JOptionPane.showMessageDialog(null,"O paciente foi cadastrado com sucesso!");
                         limparTela();

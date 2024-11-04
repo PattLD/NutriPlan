@@ -1,5 +1,8 @@
 package nutriplan.model;
 
+import nutriplan.dao.ExceptionDAO;
+import nutriplan.dao.PacienteDAO;
+
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -80,20 +83,20 @@ public class Paciente {
         System.out.println("GET: " + GET);
     }
 
-    public int calcularIdade(LocalDate dataNascimento) {
+    public static int calcularIdade(LocalDate dataNascimento) {
         LocalDate today = LocalDate.now();
         int idade = Period.between(dataNascimento, today).getYears();
         return idade;
     }
 
-    public double calcularIMC(double altura, double peso){
+    public static double calcularIMC(double altura, double peso){
         if(altura == 0){
             System.out.println("A Altura de paciente não pode ser zero!");
         }
         return peso / (altura * altura);
     }
 
-    public double calcularTMB(String sexo, double altura, double peso, int idade){
+    public static double calcularTMB(String sexo, double altura, double peso, int idade){
         System.out.println("Calculando TMB com os valores:");
         System.out.println("Sexo: " + sexo);
         System.out.println("Altura: " + altura);
@@ -109,7 +112,7 @@ public class Paciente {
         }
     }
 
-    public double calcularGET(String atividade, double TMB){
+    public static double calcularGET(String atividade, double TMB){
 
         if(atividade.equals("Sedentário")){
             return TMB*1.2;
@@ -124,8 +127,8 @@ public class Paciente {
         }
     }
 
-    public void cadastrarPaciente(Paciente paciente){
-
+    public void cadastrarPaciente(Paciente paciente) throws ExceptionDAO {
+        new PacienteDAO().cadastrarPaciente(paciente);
     }
 
 }

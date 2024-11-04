@@ -1,7 +1,8 @@
 package nutriplan.view;
 
-import nutriplan.controller.Conversão;
+import nutriplan.controller.Conversao;
 import nutriplan.controller.PlanoController;
+import nutriplan.model.Plano;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,15 +27,11 @@ public class FramePlano extends JFrame {
     JPanel buttonPanel = new JPanel();
     JPanel backPanel = new JPanel();
 
-    String [] colunas = {"Nome do alimento", "Quantidade (g)", "Kcal/100g"};
-    DefaultTableModel model = new DefaultTableModel(colunas, 0);
-    JTable tabela = new JTable(model);
-    JScrollPane scrollPane = new JScrollPane(tabela);
+    JScrollPane tabela = new JScrollPane();
 
     JLabel[] label = new JLabel[numLabel];
     TitledBorder[] title = new TitledBorder[numLabel];
     JFormattedTextField[] txtdook = new JFormattedTextField[numTxtdook];
-    JTextArea txtObjetivo = new JTextArea();
     JButton[] button = new JButton[numButton];
 
 
@@ -123,7 +120,7 @@ public class FramePlano extends JFrame {
         gbcCentral.gridx = 0;
         gbcCentral.gridy = 5;
         gbcCentral.weighty = 0.43;
-        mainPanel.add(scrollPane, gbcCentral);
+        mainPanel.add(tabela, gbcCentral);
 
         //voltar
         gbcCentral.gridx = 0;
@@ -331,11 +328,33 @@ public class FramePlano extends JFrame {
 
         return buttonPanel;
     }
-    public JScrollPane scrollPane(){
-        scrollPane.setBackground(Color.RED);
-        scrollPane.setMinimumSize(new Dimension(400, 170));
+    public JScrollPane tabela(){
+        String [] colunas = {"Nome do alimento", "Quantidade (g)", "Kcal/100g"};
+        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+            @Override
+            public Class<?> getColumnClass(int coluna) {
+                // Define o tipo de cada coluna
+                return switch (coluna) {
+                    case 0 -> String.class;    // Nome do alimento
+                    case 1, 2 -> Double.class; // Quantidade e Kcal/100g
+                    default -> Object.class;
+                };
+            }
 
-        return scrollPane;
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Torna todas as células não editáveis
+                return false;
+            }
+        };
+
+        JTable tabelaAlimentos = new JTable(model);
+
+        tabela.setViewportView(tabelaAlimentos);
+        tabela.setBackground(Color.RED);
+        tabela.setMinimumSize(new Dimension(400, 170));
+
+        return tabela;
     }
     public JPanel backPanel(){
         backPanel.setBackground(transparente);
@@ -466,15 +485,14 @@ public class FramePlano extends JFrame {
         dadosPanel = dadosPanel();
         imputPanel = imputPanel();
         buttonPanel = buttonPanel();
-        scrollPane = scrollPane();
+        tabela = tabela();
         backPanel = backPanel();
     }
     public void coletarDados(){
         nomeComida = txtdook[0].getText();
-        gramasComida = Conversão.converterDouble(txtdook[2]);
-        kcal100 = Conversão.converterDouble(txtdook[4]);
-        kcalComida = (gramasComida/100) * kcal100;
-
+        gramasComida = Conversao.converterDouble(txtdook[2]);
+        kcal100 = Conversao.converterDouble(txtdook[4]);
+        kcalComida = Plano.calcularKcalComida(gramasComida, kcal100);
     }
     public void limparTela(){
         txtdook[0].setText("");
