@@ -43,8 +43,10 @@ public class FramePaciente extends JFrame {
     String[] exercisetrings = { "SELECIONE", "Sedentário", "Levemente ativo", "Moderamente ativo", "Muito ativo" };
     JComboBox exerciseFrequency = new JComboBox(exercisetrings);
 
-    public FramePaciente(){
+    private MainFrame mainFrame;
 
+    public FramePaciente(MainFrame mainFrame){
+        this.mainFrame = mainFrame;
         // Elementos
         inicializarComponentes();
 
@@ -59,7 +61,17 @@ public class FramePaciente extends JFrame {
         this.setTitle("NutriPlan");
         this.setSize(700, 650);
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        //abrir main frame ao fechar
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
+                fecharJanela();
+            }
+        });
+
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
         this.setIconImage(getIcon().getImage());
@@ -70,7 +82,7 @@ public class FramePaciente extends JFrame {
 
     // PANEL
     public JPanel logoPanel(){
-        ImageIcon imagemLogo = getimagemLogo(0.20);
+        ImageIcon imagemLogo = getImagemLogo(0.20);
         JLabel labelLogo = new JLabel(imagemLogo);
 
         //PAINEL DO LOGO
@@ -275,6 +287,12 @@ public class FramePaciente extends JFrame {
         exerciseFrequency.setSelectedIndex(0);
         txtObjetivo.setText("");
     }
+    public void fecharJanela(){
+        this.dispose();
+        if (mainFrame != null) {
+            mainFrame.setVisible(true); // Exibe o mainFrame novamente
+        }
+    }
 
     // BOTOES
     public void voltar() {
@@ -289,7 +307,9 @@ public class FramePaciente extends JFrame {
     public void consultar() {
         button[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                FramePaciente.this.setVisible(false);
+                FrameConsultaPaciente frameConsultaPaciente = new FrameConsultaPaciente(FramePaciente.this); // Exemplo de Frame
+                frameConsultaPaciente.setVisible(true);
             }
         });
     }

@@ -5,8 +5,10 @@ import nutriplan.dao.PacienteDAO;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 
 public class Paciente {
+    private int codPaciente;
     private String nome;
     private String CPF;
     private String sexo;
@@ -21,9 +23,10 @@ public class Paciente {
     private double TMB;
     private double GET;
 
-    private Plano plano;
+    private ArrayList<Plano> planos = new ArrayList<Plano>();
 
     //getters
+    public int getCodPaciente() {return codPaciente;}
     public String getNome() {return nome;}
     public String getCPF() {return CPF;}
     public String getSexo() {return sexo;}
@@ -36,9 +39,13 @@ public class Paciente {
     public double getIMC() {return IMC;}
     public double getTMB() {return TMB;}
     public double getGET() {return GET;}
-    public Plano getPlano() {return plano;}
+    public ArrayList<Plano> getPlanos() {return planos;}
 
     //setters
+
+    public void setCodPaciente(int codPaciente) {
+        this.codPaciente = codPaciente;
+    }
     public void setNome(String nome) {this.nome = nome;}
     public void setCPF(String CPF) {this.CPF = CPF;}
     public void setSexo(String sexo) {this.sexo = sexo;}
@@ -49,7 +56,7 @@ public class Paciente {
     public void setAtividade(String atividade) {this.atividade = atividade;}
     public void setObjetivo(String objetivo) {this.objetivo = objetivo;}
     //imc,get e tmb é calculado
-
+    public Paciente(){}
     public Paciente(String nome, String CPF, String sexo, LocalDate dataNascimento, double altura, double peso, String atividade, String objetivo) {
 
         this.nome = nome;

@@ -28,25 +28,51 @@ public class MainFrame extends JFrame {
         // create a menu
         JMenu paciente = new JMenu("Paciente");
         JMenu plano = new JMenu("Plano Alimentar");
+        JMenu alimentos = new JMenu("Alimento");
+
+        JMenu cadastrarPlano = new JMenu("Cadastrar");
+        JMenu montarPlano = new JMenu("Montar");
 
         menu.add(paciente);
         menu.add(plano);
+        menu.add(alimentos);
+
+        plano.add(cadastrarPlano);
+        plano.add(montarPlano);
 
         paciente.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 MainFrame.this.setVisible(false);
-                FramePaciente framePaciente = new FramePaciente(); // Exemplo de Frame
+                FramePaciente framePaciente = new FramePaciente(MainFrame.this); // Exemplo de Frame
                 framePaciente.setVisible(true);
             }
         });
 
-        plano.addMouseListener(new MouseAdapter() {
+        montarPlano.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 MainFrame.this.setVisible(false);
-                FramePlano framePlano = new FramePlano();
+                FramePlanoAlimento framePlanoAlimento = new FramePlanoAlimento(MainFrame.this);
+                framePlanoAlimento.setVisible(true);
+            }
+        });
+
+        cadastrarPlano.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                MainFrame.this.setVisible(false);
+                FramePlano framePlano = new FramePlano(MainFrame.this);
                 framePlano.setVisible(true);
+            }
+        });
+
+        alimentos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                MainFrame.this.setVisible(false);
+                FrameAlimento frameAlimentos = new FrameAlimento(MainFrame.this);
+                frameAlimentos.setVisible(true);
             }
         });
 
@@ -78,7 +104,7 @@ public class MainFrame extends JFrame {
     }
 
     public JPanel logoPanel(){
-        ImageIcon imagemLogo = getimagemLogo(0.5);
+        ImageIcon imagemLogo = getImagemLogo(0.5);
         JLabel labelLogo = new JLabel(imagemLogo);
 
         //PAINEL DO LOGO
