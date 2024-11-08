@@ -1,15 +1,20 @@
 package nutriplan.view;
 
+import nutriplan.controller.AlimentoController;
+import nutriplan.dao.ExceptionDAO;
+import nutriplan.model.Alimento;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.crypto.Data;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static nutriplan.view.Style.*;
 
-public class FrameConsultaAlimentos extends JFrame {
+public class FrameConsultaAlimento extends JFrame {
 
     JPanel mainPanel = new JPanel();
     JPanel imputPanel = new JPanel();
@@ -21,14 +26,19 @@ public class FrameConsultaAlimentos extends JFrame {
 
     JLabel txtConsultaAlimento = titulo("Consultar Alimento");
     JLabel txtNomeAlimento = new JLabel("Nome do Alimento");
+    DefaultTableModel modelTabela = new DefaultTableModel();
+    JTable tabelaAlimentos = new JTable(modelTabela);
 
 
-    private FrameAlimento frameAlimentos;
+    private FrameAlimento frameAlimento;
 
-    public FrameConsultaAlimentos(FrameAlimento frameAlimentos) {
+    public FrameConsultaAlimento(FrameAlimento frameAlimentos) {
         inicializarComponentes();
 
-        this.frameAlimentos = frameAlimentos;
+        botaoConsultaAcao();
+        clicarTabela();
+
+        this.frameAlimento = frameAlimentos;
         this.setTitle("NutriPlan");
         this.setSize(700, 650);
         this.setResizable(false);
@@ -99,16 +109,16 @@ public class FrameConsultaAlimentos extends JFrame {
 
         return imputPanel;
     }
-    public JScrollPane tabela(){
-        String [] colunas = {"Nome completo", "CPF", "Data de nascimento","Idade"};
+    public DefaultTableModel modelTabela(){
+        String [] colunas = {"Código","Nome", "Calorias por 100g"};
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public Class<?> getColumnClass(int coluna) {
                 // Define o tipo de cada coluna
                 return switch (coluna) {
-                    case 0, 1 -> String.class;
-                    case 2 -> Data.class;
-                    case 3 -> Integer.class;
+                    case 0 -> Integer.class;
+                    case 1 -> String.class;
+                    case 2 -> Double.class;
                     default -> Object.class;
                 };
             }
@@ -119,36 +129,76 @@ public class FrameConsultaAlimentos extends JFrame {
                 return false;
             }
         };
-
-        JTable tabelaPacientes = new JTable(model);
-
-        tabela.setViewportView(tabelaPacientes);
+        return model;
+    }
+    public JScrollPane tabela(){
+        tabela.setViewportView(tabelaAlimentos);
         tabela.setBackground(Color.RED);
         tabela.setMinimumSize(new Dimension(400, 170));
 
         return tabela;
     }
 
-    public JTextField pesquisaPaciente() {
+    public JTextField pesquisaAlimento() {
         pesquisaAlimento.setPreferredSize(new Dimension(300, 25));
 
         return pesquisaAlimento;
     }
 
     public void inicializarComponentes(){
-        botaoConsulta = botaoConsulta();
-        pesquisaAlimento = pesquisaPaciente();
+        botaoConsulta = Style.botaoConsulta();
+        pesquisaAlimento = pesquisaAlimento();
 
         mainPanel = mainPanel();
         logoPanel = logoPanel();
         imputPanel = imputPanel();
+        modelTabela = modelTabela();
         tabela = tabela();
+        tabelaAlimentos.setModel(modelTabela);
 
+    }
+    public void clicarTabela(){
+        tabelaAlimentos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int codAlimento = (int) tabelaAlimentos.getModel().getValueAt(tabelaAlimentos.getSelectedRow(), 0);
+                    String nomeComida = (String) tabelaAlimentos.getModel().getValueAt(tabelaAlimentos.getSelectedRow(), 1);
+                    double kcal100 = (double) tabelaAlimentos.getModel().getValueAt(tabelaAlimentos.getSelectedRow(), 2);
+
+                    FrameConsultaAlimento.this.frameAlimento.buscarAlimento(codAlimento, nomeComida , kcal100);
+                    FrameConsultaAlimento.this.frameAlimento.setVisible(true);
+                    FrameConsultaAlimento.this.dispose();
+                }
+            }
+        });
     }
     public void fecharJanela(){
         this.dispose();
-        if (frameAlimentos != null) {
-            frameAlimentos.setVisible(true); // Exibe o FRAME PACIENTE novamente
+        if (frameAlimento != null) {
+            frameAlimento.setVisible(true); // Exibe o FRAME PACIENTE novamente
         }
+    }
+
+    public void botaoConsultaAcao(){
+        botaoConsulta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nome = pesquisaAlimento.getText();
+                modelTabela.setRowCount(0);
+                AlimentoController alimentoController = new AlimentoController();
+                try {
+                    ArrayList<Alimento> alimentos = alimentoController.listarAlimentos(nome);
+                    alimentos.forEach((Alimento alimento) -> {
+                        modelTabela.addRow(new Object[]{alimento.getCodAlimento(),
+                                alimento.getNomeComida(),
+                                alimento.getKcal100()});
+                    });
+                    tabelaAlimentos.setModel(modelTabela);
+                } catch (ExceptionDAO evt) {
+                    Logger.getLogger(FrameConsultaAlimento.class.getName()).log(Level.SEVERE, null, evt);
+                }
+
+            }
+        });
     }
 }

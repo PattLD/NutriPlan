@@ -27,4 +27,10 @@ public class Conversao {
 
         return date;
     }
+
+    public static String converterDateString(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dateString = date.format(formatter);
+        return dateString;
+    }
 }

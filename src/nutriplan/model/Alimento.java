@@ -1,11 +1,13 @@
 package nutriplan.model;
 
-import nutriplan.dao.AlimentosDAO;
+import nutriplan.dao.AlimentoDAO;
 import nutriplan.dao.ExceptionDAO;
+import nutriplan.dao.PacienteDAO;
 
 import java.util.ArrayList;
 
 public class Alimento {
+    private int codAlimento;
     private String nomeComida;
     private double kcal100;
 
@@ -16,7 +18,14 @@ public class Alimento {
         this.kcal100 = kcal100;
     }
 
+    public Alimento() {
+
+    }
+
     //GETTERS
+    public int getCodAlimento() {
+        return codAlimento;
+    }
     public String getNomeComida() {
         return nomeComida;
     }
@@ -28,6 +37,9 @@ public class Alimento {
     }
 
     //SETTERS
+    public void setCodAlimento(int codAlimento) {
+        this.codAlimento = codAlimento;
+    }
     public void setNomeComida(String nomeComida) {
         this.nomeComida = nomeComida;
     }
@@ -38,6 +50,9 @@ public class Alimento {
 
     //METODOS
     public void cadastrarAlimento(Alimento alimento) throws ExceptionDAO {
-        new AlimentosDAO().cadastrarAlimento(alimento);
+        new AlimentoDAO().cadastrarAlimento(alimento);
+    }
+    public ArrayList<Alimento> listarAlimentos(String nome) throws ExceptionDAO {
+        return new AlimentoDAO().listarAlimentos(nome);
     }
 }

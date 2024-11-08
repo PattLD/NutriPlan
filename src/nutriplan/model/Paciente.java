@@ -26,38 +26,95 @@ public class Paciente {
     private ArrayList<Plano> planos = new ArrayList<Plano>();
 
     //getters
-    public int getCodPaciente() {return codPaciente;}
-    public String getNome() {return nome;}
-    public String getCPF() {return CPF;}
-    public String getSexo() {return sexo;}
-    public LocalDate getDataNascimento() {return dataNascimento;}
-    public int getIdade() {return idade;}
-    public double getAltura() {return altura;}
-    public double getPeso() {return peso;}
-    public String getAtividade() {return atividade;}
-    public String getObjetivo() {return objetivo;}
-    public double getIMC() {return IMC;}
-    public double getTMB() {return TMB;}
-    public double getGET() {return GET;}
-    public ArrayList<Plano> getPlanos() {return planos;}
+    public int getCodPaciente() {
+        return codPaciente;
+    }
+    public String getNome() {
+        return nome;
+    }
+    public String getCPF() {
+        return CPF;
+    }
+    public String getSexo() {
+        return sexo;
+    }
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+    public int getIdade() {
+        return idade;
+    }
+    public double getAltura() {
+        return altura;
+    }
+    public double getPeso() {
+        return peso;
+    }
+    public String getAtividade() {
+        return atividade;
+    }
+    public String getObjetivo() {
+        return objetivo;
+    }
+    public double getIMC() {
+        return IMC;
+    }
+    public double getTMB() {
+        return TMB;
+    }
+    public double getGET() {
+        return GET;
+    }
+    public ArrayList<Plano> getPlanos() {
+        return planos;
+    }
 
     //setters
-
     public void setCodPaciente(int codPaciente) {
         this.codPaciente = codPaciente;
     }
-    public void setNome(String nome) {this.nome = nome;}
-    public void setCPF(String CPF) {this.CPF = CPF;}
-    public void setSexo(String sexo) {this.sexo = sexo;}
-    public void setDataNascimento(LocalDate dataNascimento) {this.dataNascimento = dataNascimento;}
-    public void setIdade(int idade) {this.idade = idade;}
-    public void setAltura(double altura) {this.altura = altura;}
-    public void setPeso(double peso) {this.peso = peso;}
-    public void setAtividade(String atividade) {this.atividade = atividade;}
-    public void setObjetivo(String objetivo) {this.objetivo = objetivo;}
-    //imc,get e tmb é calculado
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    public void setCPF(String CPF) {
+        this.CPF = CPF;
+    }
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+    public void setAltura(double altura) {
+        this.altura = altura;
+    }
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+    public void setAtividade(String atividade) {
+        this.atividade = atividade;
+    }
+    public void setObjetivo(String objetivo) {
+        this.objetivo = objetivo;
+    }
+    public void setIMC(double IMC) {
+        this.IMC = IMC;
+    }
+    public void setTMB(double TMB) {
+        this.TMB = TMB;
+    }
+    public void setGET(double GET) {
+        this.GET = GET;
+    }
+    public void setPlanos(ArrayList<Plano> planos) {
+        this.planos = planos;
+    }
+
     public Paciente(){}
-    public Paciente(String nome, String CPF, String sexo, LocalDate dataNascimento, double altura, double peso, String atividade, String objetivo) {
+    public Paciente(String nome, String CPF, String sexo, LocalDate dataNascimento, double altura, double peso, String atividade, int idade, double IMC, double TMB,  double GET) {
 
         this.nome = nome;
         this.CPF = CPF;
@@ -66,12 +123,10 @@ public class Paciente {
         this.peso = peso;
         this.altura = altura;
         this.atividade = atividade;
-        this.objetivo = objetivo;
-
-        this.idade = calcularIdade(dataNascimento);
-        this.IMC = calcularIMC(altura, peso);
-        this.TMB = calcularTMB(sexo,altura,peso,idade);
-        this.GET = calcularGET(atividade,TMB);
+        this.idade = idade;
+        this.IMC = IMC;
+        this.TMB = TMB;
+        this.GET = GET;
 
     }
 
@@ -136,6 +191,10 @@ public class Paciente {
 
     public void cadastrarPaciente(Paciente paciente) throws ExceptionDAO {
         new PacienteDAO().cadastrarPaciente(paciente);
+    }
+
+    public ArrayList<Paciente> listarPacientes(String nome) throws ExceptionDAO {
+        return new PacienteDAO().listarPacientes(nome);
     }
 
 }

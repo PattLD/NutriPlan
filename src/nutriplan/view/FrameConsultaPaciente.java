@@ -1,12 +1,19 @@
 package nutriplan.view;
 
+import nutriplan.controller.Conversao;
+import nutriplan.controller.PacienteController;
+import nutriplan.dao.ExceptionDAO;
+import nutriplan.model.Paciente;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.crypto.Data;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static nutriplan.view.Style.*;
 
@@ -22,12 +29,17 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
 
     JLabel txtConsultaPaciente = titulo("Consultar Paciente");
     JLabel txtNomePaciente = new JLabel("Nome do Paciente");
+    DefaultTableModel modelTabela = new DefaultTableModel();
+    JTable tabelaPacientes = new JTable(modelTabela);
 
 
     private FramePaciente framePaciente;
 
     public FrameConsultaPaciente(FramePaciente framePaciente) {
         inicializarComponentes();
+
+        botaoConsultaAcao();
+        clicarTabela();
 
         this.framePaciente = framePaciente;
         this.setTitle("NutriPlan");
@@ -100,16 +112,17 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
 
         return imputPanel;
     }
-    public JScrollPane tabela(){
-        String [] colunas = {"Nome completo", "CPF", "Data de nascimento","Idade"};
+    public DefaultTableModel modelTabela(){
+        String [] colunas = {"Código","Nome completo", "CPF", "Sexo", "Nascimento","Altura", "Peso", "Atividade"};
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public Class<?> getColumnClass(int coluna) {
                 // Define o tipo de cada coluna
                 return switch (coluna) {
-                    case 0, 1 -> String.class;
-                    case 2 -> Data.class;
-                    case 3 -> Integer.class;
+                    case 0 -> Integer.class;
+                    case 1, 2, 3, 7 -> String.class;
+                    case 4 -> Data.class;
+                    case 5, 6 -> Double.class;
                     default -> Object.class;
                 };
             }
@@ -120,9 +133,9 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
                 return false;
             }
         };
-
-        JTable tabelaPacientes = new JTable(model);
-
+        return model;
+    }
+    public JScrollPane tabela(){
         tabela.setViewportView(tabelaPacientes);
         tabela.setBackground(Color.RED);
         tabela.setMinimumSize(new Dimension(400, 170));
@@ -137,19 +150,70 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
     }
 
     public void inicializarComponentes(){
-        botaoConsulta = botaoConsulta();
+        botaoConsulta = Style.botaoConsulta();
         pesquisaPaciente = pesquisaPaciente();
 
         mainPanel = mainPanel();
         logoPanel = logoPanel();
         imputPanel = imputPanel();
+        modelTabela = modelTabela();
         tabela = tabela();
+        tabelaPacientes.setModel(modelTabela);
 
+
+    }
+    public void clicarTabela(){
+        tabelaPacientes.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int codPaciente = (int) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 0);
+                    String nome = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 1);
+                    String CPF = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 2);
+                    String sexo = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 3);
+                    LocalDate dataNascimento = (LocalDate) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 4);
+                    double altura = (double) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 5);
+                    double peso = (double) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 6);
+                    String atividade = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 7);
+
+                    FrameConsultaPaciente.this.framePaciente.buscarPaciente(codPaciente,nome,CPF,sexo,dataNascimento,altura,peso,atividade);
+                    FrameConsultaPaciente.this.framePaciente.setVisible(true);
+                    FrameConsultaPaciente.this.dispose();
+                }
+            }
+        });
     }
     public void fecharJanela(){
         this.dispose();
         if (framePaciente != null) {
             framePaciente.setVisible(true); // Exibe o FRAME PACIENTE novamente
         }
+    }
+
+    public void botaoConsultaAcao(){
+        botaoConsulta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nome = pesquisaPaciente.getText();
+                modelTabela.setRowCount(0);
+                PacienteController pacienteController = new PacienteController();
+                try {
+                    ArrayList<Paciente> pacientes = pacienteController.listarPacientes(nome);
+                    pacientes.forEach((Paciente paciente) -> {
+                        modelTabela.addRow(new Object[]{paciente.getCodPaciente(),
+                                                        paciente.getNome(),
+                                                        paciente.getCPF(),
+                                                        paciente.getSexo(),
+                                                        paciente.getDataNascimento(),
+                                                        paciente.getAltura(),
+                                                        paciente.getPeso(),
+                                                        paciente.getAtividade()});
+                    });
+                    tabelaPacientes.setModel(modelTabela);
+                } catch (ExceptionDAO evt) {
+                    Logger.getLogger(FrameConsultaPaciente.class.getName()).log(Level.SEVERE, null, evt);
+                }
+
+            }
+        });
     }
 }

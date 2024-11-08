@@ -80,7 +80,7 @@ public class MainFrame extends JFrame {
 
         // Frame
         this.setTitle("NutriPlan");
-        this.setSize(700, 650);
+        this.setSize(700, 450);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());

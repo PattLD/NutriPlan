@@ -2,6 +2,9 @@ package nutriplan.controller;
 
 import nutriplan.dao.ExceptionDAO;
 import nutriplan.model.Alimento;
+import nutriplan.model.Alimento;
+
+import java.util.ArrayList;
 
 public class AlimentoController {
     public static boolean cadastrarAlimento(String nomeComida, double kcal100) throws ExceptionDAO {
@@ -15,5 +18,8 @@ public class AlimentoController {
             return false;
         }
 
+    }
+    public ArrayList<Alimento> listarAlimentos(String nome) throws ExceptionDAO{
+        return new Alimento().listarAlimentos(nome);
     }
 }

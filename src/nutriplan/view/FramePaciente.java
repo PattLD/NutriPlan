@@ -26,7 +26,7 @@ public class FramePaciente extends JFrame {
     private double TMB;
     private double GET;
 
-    private String txtErro;
+    private int codPaciente = 0;
 
     JPanel mainPanel = new JPanel();
     JPanel logoPanel = new JPanel();
@@ -59,7 +59,7 @@ public class FramePaciente extends JFrame {
 
         // Frame
         this.setTitle("NutriPlan");
-        this.setSize(700, 650);
+        this.setSize(700, 450);
         this.setResizable(false);
 
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -173,9 +173,9 @@ public class FramePaciente extends JFrame {
         formsPanel.add(exerciseFrequency, Style.configurarConstraints(gbcForms,2,5,1,1,insetsBaixo));
 
         //objetivo
-        formsPanel.add(label[8], Style.configurarConstraints(gbcForms,0,6,3,1, 1, 0, insetsCima));
+//        formsPanel.add(label[8], Style.configurarConstraints(gbcForms,0,6,3,1, 1, 0, insetsCima));
         //
-        formsPanel.add(txtObjetivo, Style.configurarConstraints(gbcForms,0,7,3,1,1,1,insetsBaixo));
+//        formsPanel.add(txtObjetivo, Style.configurarConstraints(gbcForms,0,7,3,1,1,1,insetsBaixo));
 
         return formsPanel;
     }
@@ -293,6 +293,24 @@ public class FramePaciente extends JFrame {
             mainFrame.setVisible(true); // Exibe o mainFrame novamente
         }
     }
+    public void buscarPaciente (int codPaciente, String nome, String CPF, String sexo, LocalDate dataNascimento, double altura, double peso, String atividade){
+        this.codPaciente = codPaciente;
+        txtdook[0].setText(nome);
+        txtdook[1].setText(CPF);
+        for (int i=0;i<gender.getItemCount();i++){
+            if (gender.getItemAt(i).equals(sexo)){
+                gender.setSelectedIndex(i);
+            }
+        }
+        txtdook[2].setText(Conversao.converterDateString(dataNascimento));
+        txtdook[3].setText(String.valueOf(altura));
+        txtdook[4].setText(String.valueOf(peso));
+        for (int i=0;i<exerciseFrequency.getItemCount();i++){
+            if (exerciseFrequency.getItemAt(i).equals(atividade)){
+                exerciseFrequency.setSelectedIndex(i);
+            }
+        }
+    }
 
     // BOTOES
     public void voltar() {
@@ -337,7 +355,7 @@ public class FramePaciente extends JFrame {
                 GET = Paciente.calcularGET(atividade,TMB);
 
                 try {
-                    boolean sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, objetivo, idade, IMC, TMB, GET);
+                    boolean sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, idade, IMC, TMB, GET);
                     if(sucesso){
                         JOptionPane.showMessageDialog(null,"O paciente foi cadastrado com sucesso!");
                         limparTela();

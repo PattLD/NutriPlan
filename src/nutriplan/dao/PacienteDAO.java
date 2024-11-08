@@ -56,14 +56,39 @@ public class PacienteDAO {
             connection = new ConnectionDAO().getConnection();
             pStatement = connection.prepareStatement(sql);
             ResultSet rs = pStatement.executeQuery(sql);
-
             if(rs!=null){
                 pacientes = new ArrayList<>();
                 while(rs.next()){
                     Paciente paciente = new Paciente();
+                    paciente.setCodPaciente(rs.getInt("id_pessoa"));
+                    paciente.setNome(rs.getString("nome"));
+                    paciente.setSexo(rs.getString("sexo"));
+                    paciente.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
+                    paciente.setPeso(rs.getDouble("peso"));
+                    paciente.setAltura(rs.getDouble("altura"));
+                    paciente.setAtividade(rs.getString("nivel_atividade"));
+                    paciente.setCPF(rs.getString("cpf"));
+                    paciente.setIdade(rs.getInt("idade"));
+                    paciente.setIMC(rs.getDouble("imc"));
+                    paciente.setTMB(rs.getDouble("tmb"));
+                    paciente.setGET(rs.getDouble("get"));
+                    pacientes.add(paciente);
                 }
             }
-        } catch (Exception e){}
+        } catch (SQLException e){
+            throw new ExceptionDAO("Erro ao listar os pacientes: " + e.getMessage());
+        } finally {
+            try {
+                if(pStatement!=null) {pStatement.close();}
+            } catch (SQLException e) {
+                throw new ExceptionDAO("Erro ao fechar o pStatement: " + e.getMessage());
+            }
+            try{
+                if (connection!=null) {connection.close();}
+            } catch (SQLException e){
+                throw new ExceptionDAO("Erro ao fechar o connection: " + e.getMessage());
+            }
+        }
 
         return pacientes;
     }

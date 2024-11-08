@@ -2,8 +2,6 @@ package nutriplan.view;
 
 import nutriplan.controller.AlimentoController;
 import nutriplan.controller.Conversao;
-import nutriplan.controller.PacienteController;
-import nutriplan.model.Paciente;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +14,7 @@ import static nutriplan.view.Style.*;
 
 public class FrameAlimento extends JFrame {
 
+    int codComida = 0;
     String nomeComida = "";
     double kcal100 = 0;
 
@@ -197,6 +196,11 @@ public class FrameAlimento extends JFrame {
             mainFrame.setVisible(true); // Exibe o mainFrame novamente
         }
     }
+    public void buscarAlimento(int codComida, String nomeComida, double kcal100) {
+        this.codComida = codComida;
+        txtdook[0].setText(nomeComida);
+        txtdook[1].setText(String.valueOf(kcal100));
+    }
 
     // BOTOES
     public void voltar() {
@@ -212,7 +216,7 @@ public class FrameAlimento extends JFrame {
         button[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 FrameAlimento.this.setVisible(false);
-                FrameConsultaAlimentos frameConsultaAlimentos = new FrameConsultaAlimentos(FrameAlimento.this); // Exemplo de Frame
+                FrameConsultaAlimento frameConsultaAlimentos = new FrameConsultaAlimento(FrameAlimento.this); // Exemplo de Frame
                 frameConsultaAlimentos.setVisible(true);
             }
         });
