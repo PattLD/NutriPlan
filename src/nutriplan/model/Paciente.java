@@ -193,8 +193,16 @@ public class Paciente {
         new PacienteDAO().cadastrarPaciente(paciente);
     }
 
+    public void alterarPaciente(Paciente paciente) throws ExceptionDAO {
+        new PacienteDAO().alterarPaciente(paciente);
+    }
+
     public ArrayList<Paciente> listarPacientes(String nome) throws ExceptionDAO {
         return new PacienteDAO().listarPacientes(nome);
+    }
+
+    public void apagarPaciente(Paciente paciente) throws ExceptionDAO {
+        new PacienteDAO().apagarPaciente(paciente);
     }
 
 }

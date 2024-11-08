@@ -38,6 +38,7 @@ public class FrameAlimento extends JFrame {
         voltar();
         consultar();
         limpar();
+        deletar();
         salvar();
 
         // Frame
@@ -140,6 +141,7 @@ public class FrameAlimento extends JFrame {
         backPanel.add(button[1]);
         backPanel.add(button[2]);
         backPanel.add(button[3]);
+        backPanel.add(button[4]);
 
         return backPanel;
     }
@@ -171,7 +173,8 @@ public class FrameAlimento extends JFrame {
         button[0].setText("Voltar");
         button[1].setText("Consultar");
         button[2].setText("Limpar");
-        button[3].setText("Salvar");
+        button[3].setText("Deletar");
+        button[4].setText("Salvar");
     }
 
     // AÇÕES
@@ -224,8 +227,9 @@ public class FrameAlimento extends JFrame {
     public void limpar() {
         button[2].addActionListener(e -> limparTela());
     }
+    public void deletar(){}
     public void salvar(){
-        button[3].addActionListener(new ActionListener() {
+        button[4].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 AlimentoController alimentoController = new AlimentoController();

@@ -55,6 +55,7 @@ public class FramePaciente extends JFrame {
         voltar();
         consultar();
         limpar();
+        deletar();
         salvar();
 
         // Frame
@@ -104,7 +105,6 @@ public class FramePaciente extends JFrame {
         GridBagConstraints gbcCentral = new GridBagConstraints();
 
         // GRID DO PAINEL CENTRAL
-
         // logo
         mainPanel.add(logoPanel, Style.configurarConstraints(gbcCentral,0,0,1,0.08,new Insets(5, 5, 0, 5)));
 
@@ -187,6 +187,7 @@ public class FramePaciente extends JFrame {
         backPanel.add(button[1]);
         backPanel.add(button[2]);
         backPanel.add(button[3]);
+        backPanel.add(button[4]);
 
         return backPanel;
     }
@@ -247,7 +248,8 @@ public class FramePaciente extends JFrame {
         button[0].setText("Voltar");
         button[1].setText("Consultar");
         button[2].setText("Limpar");
-        button[3].setText("Salvar");
+        button[3].setText("Deletar");
+        button[4].setText("Salvar");
     }
 
     // COMBOBOX
@@ -334,8 +336,9 @@ public class FramePaciente extends JFrame {
     public void limpar() {
         button[2].addActionListener(e -> limparTela());
     }
+    public void deletar(){}
     public void salvar(){
-        button[3].addActionListener(new ActionListener() {
+        button[4].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Inclusão de dados
                 PacienteController pacienteController = new PacienteController();
@@ -353,9 +356,14 @@ public class FramePaciente extends JFrame {
                 IMC = Paciente.calcularIMC(altura, peso);
                 TMB = Paciente.calcularTMB(sexo,altura,peso,idade);
                 GET = Paciente.calcularGET(atividade,TMB);
-
+                boolean sucesso;
                 try {
-                    boolean sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, idade, IMC, TMB, GET);
+                    if(FramePaciente.this.codPaciente == 0){
+                        sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, idade, IMC, TMB, GET);
+                    } else {
+                        sucesso = pacienteController.alterarPaciente(FramePaciente.this.codPaciente, nome, CPF, sexo, dataNascimento, altura, peso, atividade, idade, IMC, TMB, GET);
+                    }
+
                     if(sucesso){
                         JOptionPane.showMessageDialog(null,"O paciente foi cadastrado com sucesso!");
                         limparTela();
