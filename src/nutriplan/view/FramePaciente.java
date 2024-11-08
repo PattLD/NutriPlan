@@ -1,6 +1,6 @@
 package nutriplan.view;
 
-import nutriplan.controller.Conversão;
+import nutriplan.controller.Conversao;
 import nutriplan.controller.PacienteController;
 import nutriplan.model.Paciente;
 
@@ -8,8 +8,6 @@ import javax.swing.*;  // Pacote para os componentes da GUI (JFrame, JButton, JL
 import java.awt.*;     // Pacote para layouts e manipulação de gráficos
 import java.awt.event.*;  // Pacote para manipulação de eventos (ActionListener)
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import static nutriplan.view.Style.*;
 
@@ -23,13 +21,12 @@ public class FramePaciente extends JFrame {
     private double peso;
 	private String atividade;
     private String objetivo;
-
     private int idade;
     private double IMC;
     private double TMB;
     private double GET;
 
-    private String txtErro;
+    private int codPaciente = 0;
 
     JPanel mainPanel = new JPanel();
     JPanel logoPanel = new JPanel();
@@ -46,8 +43,10 @@ public class FramePaciente extends JFrame {
     String[] exercisetrings = { "SELECIONE", "Sedentário", "Levemente ativo", "Moderamente ativo", "Muito ativo" };
     JComboBox exerciseFrequency = new JComboBox(exercisetrings);
 
-    public FramePaciente(){
+    private MainFrame mainFrame;
 
+    public FramePaciente(MainFrame mainFrame){
+        this.mainFrame = mainFrame;
         // Elementos
         inicializarComponentes();
 
@@ -60,9 +59,19 @@ public class FramePaciente extends JFrame {
 
         // Frame
         this.setTitle("NutriPlan");
-        this.setSize(700, 650);
+        this.setSize(700, 450);
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        //abrir main frame ao fechar
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
+                fecharJanela();
+            }
+        });
+
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
         this.setIconImage(getIcon().getImage());
@@ -73,7 +82,7 @@ public class FramePaciente extends JFrame {
 
     // PANEL
     public JPanel logoPanel(){
-        ImageIcon imagemLogo = getimagemLogo(0.20);
+        ImageIcon imagemLogo = getImagemLogo(0.20);
         JLabel labelLogo = new JLabel(imagemLogo);
 
         //PAINEL DO LOGO
@@ -164,9 +173,9 @@ public class FramePaciente extends JFrame {
         formsPanel.add(exerciseFrequency, Style.configurarConstraints(gbcForms,2,5,1,1,insetsBaixo));
 
         //objetivo
-        formsPanel.add(label[8], Style.configurarConstraints(gbcForms,0,6,3,1, 1, 0, insetsCima));
+//        formsPanel.add(label[8], Style.configurarConstraints(gbcForms,0,6,3,1, 1, 0, insetsCima));
         //
-        formsPanel.add(txtObjetivo, Style.configurarConstraints(gbcForms,0,7,3,1,1,1,insetsBaixo));
+//        formsPanel.add(txtObjetivo, Style.configurarConstraints(gbcForms,0,7,3,1,1,1,insetsBaixo));
 
         return formsPanel;
     }
@@ -278,6 +287,30 @@ public class FramePaciente extends JFrame {
         exerciseFrequency.setSelectedIndex(0);
         txtObjetivo.setText("");
     }
+    public void fecharJanela(){
+        this.dispose();
+        if (mainFrame != null) {
+            mainFrame.setVisible(true); // Exibe o mainFrame novamente
+        }
+    }
+    public void buscarPaciente (int codPaciente, String nome, String CPF, String sexo, LocalDate dataNascimento, double altura, double peso, String atividade){
+        this.codPaciente = codPaciente;
+        txtdook[0].setText(nome);
+        txtdook[1].setText(CPF);
+        for (int i=0;i<gender.getItemCount();i++){
+            if (gender.getItemAt(i).equals(sexo)){
+                gender.setSelectedIndex(i);
+            }
+        }
+        txtdook[2].setText(Conversao.converterDateString(dataNascimento));
+        txtdook[3].setText(String.valueOf(altura));
+        txtdook[4].setText(String.valueOf(peso));
+        for (int i=0;i<exerciseFrequency.getItemCount();i++){
+            if (exerciseFrequency.getItemAt(i).equals(atividade)){
+                exerciseFrequency.setSelectedIndex(i);
+            }
+        }
+    }
 
     // BOTOES
     public void voltar() {
@@ -292,7 +325,9 @@ public class FramePaciente extends JFrame {
     public void consultar() {
         button[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                FramePaciente.this.setVisible(false);
+                FrameConsultaPaciente frameConsultaPaciente = new FrameConsultaPaciente(FramePaciente.this); // Exemplo de Frame
+                frameConsultaPaciente.setVisible(true);
             }
         });
     }
@@ -308,14 +343,22 @@ public class FramePaciente extends JFrame {
                 nome = txtdook[0].getText();
                 CPF = txtdook[1].getText();
                 sexo = (String) gender.getSelectedItem();
-                dataNascimento = Conversão.converterLocalDate(txtdook[2]);
-                altura = Conversão.converterDouble(txtdook[3]);
-                peso = Conversão.converterDouble(txtdook[4]);
+                dataNascimento = Conversao.converterLocalDate(txtdook[2]);
+                altura = Conversao.converterDouble(txtdook[3]);
+                peso = Conversao.converterDouble(txtdook[4]);
                 atividade = (String) exerciseFrequency.getSelectedItem();
                 objetivo = txtObjetivo.getText();
 
+                idade = Paciente.calcularIdade(dataNascimento);
+                IMC = Paciente.calcularIMC(altura, peso);
+                TMB = Paciente.calcularTMB(sexo,altura,peso,idade);
+                GET = Paciente.calcularGET(atividade,TMB);
+
+                boolean sucesso;
+
                 try {
-                    boolean sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, objetivo);
+                    sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, idade, IMC, TMB, GET);
+
                     if(sucesso){
                         JOptionPane.showMessageDialog(null,"O paciente foi cadastrado com sucesso!");
                         limparTela();
