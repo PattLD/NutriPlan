@@ -30,15 +30,15 @@ public class FrameConsultaAlimento extends JFrame {
     JTable tabelaAlimentos = new JTable(modelTabela);
 
 
-    private FrameAlimento frameAlimento;
+    private JFrame telaCadastro = new JFrame();
 
-    public FrameConsultaAlimento(FrameAlimento frameAlimentos) {
+    public FrameConsultaAlimento(JFrame telaCadastro) {
         inicializarComponentes();
 
         botaoConsultaAcao();
         clicarTabela();
 
-        this.frameAlimento = frameAlimentos;
+        this.telaCadastro = telaCadastro;
         this.setTitle("NutriPlan");
         this.setSize(700, 650);
         this.setResizable(false);
@@ -166,17 +166,22 @@ public class FrameConsultaAlimento extends JFrame {
                     String nomeComida = (String) tabelaAlimentos.getModel().getValueAt(tabelaAlimentos.getSelectedRow(), 1);
                     double kcal100 = (double) tabelaAlimentos.getModel().getValueAt(tabelaAlimentos.getSelectedRow(), 2);
 
-                    FrameConsultaAlimento.this.frameAlimento.buscarAlimento(codAlimento, nomeComida , kcal100);
-                    FrameConsultaAlimento.this.frameAlimento.setVisible(true);
-                    FrameConsultaAlimento.this.dispose();
+                    if (telaCadastro instanceof FrameAlimento) {
+                        FrameAlimento frameAlimento = (FrameAlimento) telaCadastro;
+                        frameAlimento.buscarAlimento(codAlimento, nomeComida, kcal100);
+                        frameAlimento.setVisible(true);
+                        FrameConsultaAlimento.this.dispose();
+                    } else {
+                        System.out.println("Erro: telaCadastro não é uma instância de FrameAlimento.");
+                    }
                 }
             }
         });
     }
     public void fecharJanela(){
         this.dispose();
-        if (frameAlimento != null) {
-            frameAlimento.setVisible(true); // Exibe o FRAME PACIENTE novamente
+        if (telaCadastro != null) {
+            telaCadastro.setVisible(true); // Exibe o FRAME PACIENTE novamente
         }
     }
 

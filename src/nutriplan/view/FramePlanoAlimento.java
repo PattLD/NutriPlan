@@ -442,6 +442,10 @@ public class FramePlanoAlimento extends JFrame {
         tabela = tabela();
         backPanel = backPanel();
         consultaPaciente = consulta();
+        consultaAlimento = consulta(e -> {
+            FrameConsultaAlimento frameConsultaAlimento = new FrameConsultaAlimento((JFrame) FramePlanoAlimento.this);
+            frameConsultaAlimento.setVisible(true);
+});
     }
     public void limparTela(){
         txtdook[0].setText("");
