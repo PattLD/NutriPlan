@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import static nutriplan.view.Style.*;
 
-public class FrameConsultaPaciente extends javax.swing.JFrame {
+public class FrameConsultaPlano extends JFrame {
 
     JPanel mainPanel = new JPanel();
     JPanel imputPanel = new JPanel();
@@ -34,7 +34,7 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
 
     ArrayList<Paciente> listaPacientes;
 
-    public FrameConsultaPaciente(JFrame telaCadastro) {
+    public FrameConsultaPlano(JFrame telaCadastro) {
         inicializarComponentes();
 
         botaoConsultaAcao();
@@ -187,7 +187,7 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
                             );
 
                             framePaciente.setVisible(true);
-                            FrameConsultaPaciente.this.dispose();
+                            FrameConsultaPlano.this.dispose();
                         } else if (telaCadastro instanceof FramePlano) {
                             FramePlano framePlano = (FramePlano) telaCadastro;
 
@@ -200,7 +200,7 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
                             );
 
                             framePlano.setVisible(true);
-                            FrameConsultaPaciente.this.dispose();
+                            FrameConsultaPlano.this.dispose();
                         } else {
                             System.out.println("Erro: telaCadastro não é uma instância esperada.");
                         }
@@ -249,7 +249,7 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
                     });
                     tabelaPacientes.setModel(modelTabela);
                 } catch (ExceptionDAO evt) {
-                    Logger.getLogger(FrameConsultaPaciente.class.getName()).log(Level.SEVERE, null, evt);
+                    Logger.getLogger(FrameConsultaPlano.class.getName()).log(Level.SEVERE, null, evt);
                 }
 
             }

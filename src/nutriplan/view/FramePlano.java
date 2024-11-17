@@ -21,6 +21,8 @@ public class FramePlano extends JFrame {
     private LocalDate data_criacao;
     private String objetivo;
 
+    int codPaciente;
+
     JPanel paciente = new JPanel();
     JPanel plano = new JPanel();
     JPanel mainPanel = new JPanel();
@@ -333,12 +335,20 @@ public class FramePlano extends JFrame {
         txtdook[3].setText("");
         txtdook[4].setText("");
         txtObjetivo.setText("");
+        txtConsultaPaciente.setText("");
     }
     public void fecharJanela(){
         this.dispose();
         if (mainFrame != null) {
             mainFrame.setVisible(true); // Exibe o mainFrame novamente
         }
+    }
+    public void buscarPaciente (int codPaciente, String nome, double IMC, double TMC, double GET){
+        this.codPaciente = codPaciente;
+        txtConsultaPaciente.setText(nome);
+        txtdook[1].setText(String.valueOf(IMC));
+        txtdook[2].setText(String.valueOf(TMC));
+        txtdook[3].setText(String.valueOf(GET));
     }
 
     // BOTOES
