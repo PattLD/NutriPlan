@@ -171,6 +171,11 @@ public class FrameConsultaAlimento extends JFrame {
                         frameAlimento.buscarAlimento(codAlimento, nomeComida, kcal100);
                         frameAlimento.setVisible(true);
                         FrameConsultaAlimento.this.dispose();
+                    } else if (telaCadastro instanceof FramePlanoAlimento) {
+                        FramePlanoAlimento framePlanoAlimento = (FramePlanoAlimento) telaCadastro;
+                        framePlanoAlimento.buscarAlimento(codAlimento,nomeComida);
+                        framePlanoAlimento.setVisible(true);
+                        FrameConsultaAlimento.this.dispose();
                     } else {
                         System.out.println("Erro: telaCadastro não é uma instância de FrameAlimento.");
                     }

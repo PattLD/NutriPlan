@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLOutput;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -22,6 +23,7 @@ public class FramePlanoAlimento extends JFrame {
     double gramasComida = 0;
     double kcal100 = 0;
     double kcalComida = 0;
+    int codComida;
 
     JPanel mainPanel = new JPanel();
     JPanel dadosPanel = new JPanel();
@@ -29,8 +31,14 @@ public class FramePlanoAlimento extends JFrame {
     JPanel buttonPanel = new JPanel();
     JPanel backPanel = new JPanel();
 
-    JPanel consultaPaciente = Style.consulta();
-    JPanel consultaAlimento = Style.consulta();
+    JPanel consultaPaciente = new JPanel();
+    JButton botaoConsultaPaciente = new JButton();
+    JTextField txtConsultaPaciente = new JTextField();
+
+
+    JPanel consultaAlimento = new JPanel();
+    JButton botaoConsultaAlimento = new JButton();
+    JTextField txtConsultaAlimento = new JTextField();
 
     JScrollPane tabela = new JScrollPane();
 
@@ -321,18 +329,79 @@ public class FramePlanoAlimento extends JFrame {
 
         return backPanel;
     }
+    public JPanel consultaPaciente(){
 
-//    public JPanel consultaPaciente(){
-//        ActionListener abrirConsultaPaciente = abrirConsultaPaciente();
-//        consultaPaciente = Style.consultaPaciente(abrirConsultaPaciente);
-//        return consultaPaciente;
-//    }
-//    public ActionListener abrirConsultaPaciente() {
-//        return e -> {
-//            FrameConsultaPaciente frameConsultaPaciente = new FrameConsultaPaciente(this); // Exemplo de Frame
-//            frameConsultaPaciente.setVisible(true);
-//        };
-//    }
+        try {
+            ImageIcon lupa = new ImageIcon("src/images/consultaIcon.png");
+            botaoConsultaPaciente.setIcon(lupa);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        botaoConsultaPaciente.setOpaque(true);
+        botaoConsultaPaciente.setBackground(verdeEscuro);
+        botaoConsultaPaciente.setBorder(loweredbevel);
+        botaoConsultaPaciente.setSize(24,24);
+        botaoConsultaPaciente.setFocusable(false);
+
+        botaoConsultaPaciente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FramePlanoAlimento.this.setVisible(false);
+                FrameConsultaPaciente frameConsultaPaciente = new FrameConsultaPaciente((JFrame) FramePlanoAlimento.this);
+                frameConsultaPaciente.setVisible(true);
+            }
+        });
+
+        txtConsultaPaciente.setEditable(false);
+        txtConsultaPaciente.setFocusable(false);
+        txtConsultaPaciente.setText("");
+
+        consultaPaciente.setBackground(transparente);
+        consultaPaciente.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        consultaPaciente.add(txtConsultaPaciente, configurarConstraints(c,0,0, 1,1,0.95,1, new Insets(5,5,5,5)));
+        consultaPaciente.add(botaoConsultaPaciente, configurarConstraints(c,1,0,1,1,0.05,1, new Insets(5,5,5,5)));
+
+        return consultaPaciente;
+    }
+    public JPanel consultaAlimento(){
+        try {
+            ImageIcon lupa = new ImageIcon("src/images/consultaIcon.png");
+            botaoConsultaAlimento.setIcon(lupa);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        botaoConsultaAlimento.setOpaque(true);
+        botaoConsultaAlimento.setBackground(verdeEscuro);
+        botaoConsultaAlimento.setBorder(loweredbevel);
+        botaoConsultaAlimento.setSize(24,24);
+        botaoConsultaAlimento.setFocusable(false);
+
+        botaoConsultaAlimento.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FramePlanoAlimento.this.setVisible(false);
+                FrameConsultaAlimento frameConsultaAlimento = new FrameConsultaAlimento((JFrame) FramePlanoAlimento.this);
+                frameConsultaAlimento.setVisible(true);
+            }
+        });
+
+        txtConsultaAlimento.setEditable(false);
+        txtConsultaAlimento.setFocusable(false);
+        txtConsultaAlimento.setText("");
+
+        consultaAlimento.setBackground(transparente);
+        consultaAlimento.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        consultaAlimento.add(txtConsultaAlimento, configurarConstraints(c,0,0, 1,1,0.95,1, new Insets(5,5,5,5)));
+        consultaAlimento.add(botaoConsultaAlimento, configurarConstraints(c,1,0,1,1,0.05,1, new Insets(5,5,5,5)));
+
+        return consultaAlimento;
+    }
 
     // OUTROS ELEMENTOS
     public void label(){
@@ -441,11 +510,8 @@ public class FramePlanoAlimento extends JFrame {
         buttonPanel = buttonPanel();
         tabela = tabela();
         backPanel = backPanel();
-        consultaPaciente = consulta();
-        consultaAlimento = consulta(e -> {
-            FrameConsultaAlimento frameConsultaAlimento = new FrameConsultaAlimento((JFrame) FramePlanoAlimento.this);
-            frameConsultaAlimento.setVisible(true);
-});
+        consultaPaciente = consultaPaciente();
+        consultaAlimento = consultaAlimento();
     }
     public void limparTela(){
         txtdook[0].setText("");
@@ -457,6 +523,11 @@ public class FramePlanoAlimento extends JFrame {
         if (mainFrame != null) {
             mainFrame.setVisible(true); // Exibe o mainFrame novamente
         }
+    }
+    public void buscarAlimento(int codComida, String nomeComida) {
+        this.codComida = codComida;
+        this.txtConsultaAlimento.setText(nomeComida);
+
     }
 
     // BOTOES

@@ -7,6 +7,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
@@ -86,13 +87,43 @@ public class Style {
 
         return consulta;
     }
-    public static JPanel consulta(ActionListener e){
-        JButton botaoConsulta = botaoConsulta();
-        botaoConsulta.addActionListener(e);
+    public static JPanel consulta(JFrame atual, String telaConsulta, String txtDook){
+        JButton botaoConsulta = new JButton();
+        try {
+            ImageIcon lupa = new ImageIcon("src/images/consultaIcon.png");
+            botaoConsulta.setIcon(lupa);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        botaoConsulta.setOpaque(true);
+        botaoConsulta.setBackground(verdeEscuro);
+        botaoConsulta.setBorder(loweredbevel);
+        botaoConsulta.setSize(24,24);
+        botaoConsulta.setFocusable(false);
+
+        botaoConsulta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (telaConsulta.equals("FrameConsultaAlimento")) {
+                    atual.setVisible(false);
+                    FrameConsultaAlimento frameConsultaAlimento = new FrameConsultaAlimento(atual);
+                    frameConsultaAlimento.setVisible(true);
+                } else if (telaConsulta.equals("FrameConsultaPaciente")) {
+                    atual.setVisible(false);
+                    FrameConsultaPaciente frameConsultaPaciente = new FrameConsultaPaciente(atual);
+                    frameConsultaPaciente.setVisible(true);
+                } else{
+                    System.out.println("algo deu errado");
+                }
+            }
+        });
 
         JTextField txtConsulta = new JTextField();
         txtConsulta.setEditable(false);
         txtConsulta.setFocusable(false);
+        txtConsulta.setText(txtDook);
 
         JPanel consulta = new JPanel();
         consulta.setBackground(transparente);

@@ -1,6 +1,5 @@
 package nutriplan.view;
 
-import nutriplan.controller.Conversao;
 import nutriplan.controller.PacienteController;
 import nutriplan.dao.ExceptionDAO;
 import nutriplan.model.Paciente;
@@ -32,16 +31,15 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
     DefaultTableModel modelTabela = new DefaultTableModel();
     JTable tabelaPacientes = new JTable(modelTabela);
 
+    private JFrame telaCadastro;
 
-    private FramePaciente framePaciente;
-
-    public FrameConsultaPaciente(FramePaciente framePaciente) {
+    public FrameConsultaPaciente(JFrame telaCadastro) {
         inicializarComponentes();
 
         botaoConsultaAcao();
         clicarTabela();
 
-        this.framePaciente = framePaciente;
+        this.telaCadastro = telaCadastro;
         this.setTitle("NutriPlan");
         this.setSize(700, 650);
         this.setResizable(false);
@@ -176,17 +174,27 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
                     double peso = (double) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 6);
                     String atividade = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 7);
 
-                    FrameConsultaPaciente.this.framePaciente.buscarPaciente(codPaciente,nome,CPF,sexo,dataNascimento,altura,peso,atividade);
-                    FrameConsultaPaciente.this.framePaciente.setVisible(true);
-                    FrameConsultaPaciente.this.dispose();
+                    if (telaCadastro instanceof FramePaciente) {
+                        FramePaciente framePaciente = (FramePaciente) telaCadastro;
+                        framePaciente.buscarPaciente(codPaciente,nome,CPF,sexo,dataNascimento,altura,peso,atividade);
+                        framePaciente.setVisible(true);
+                        FrameConsultaPaciente.this.dispose();
+                    } else if (telaCadastro instanceof FramePlano) {
+                        FramePlano framePlano = (FramePlano) telaCadastro;
+                        //
+                        framePlano.setVisible(true);
+                        FrameConsultaPaciente.this.dispose();
+                    } else {
+                        System.out.println("Erro: telaCadastro não é uma instância de FrameAlimento.");
+                    }
                 }
             }
         });
     }
     public void fecharJanela(){
         this.dispose();
-        if (framePaciente != null) {
-            framePaciente.setVisible(true); // Exibe o FRAME PACIENTE novamente
+        if (telaCadastro != null) {
+            telaCadastro.setVisible(true); // Exibe o FRAME PACIENTE novamente
         }
     }
 

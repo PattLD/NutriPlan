@@ -29,7 +29,9 @@ public class FramePlano extends JFrame {
     JPanel formsPanel = new JPanel();
     JPanel backPanel = new JPanel();
 
-    JPanel consulta = Style.consulta();
+    JPanel consultaPaciente = new JPanel();
+    JButton botaoConsultaPaciente = new JButton();
+    JTextField txtConsultaPaciente = new JTextField();
 
     JLabel[] label = new JLabel[numLabel];
     JFormattedTextField[] txtdook = new JFormattedTextField[numTxtdook];
@@ -124,7 +126,7 @@ public class FramePlano extends JFrame {
 
 
         //CONSULTA
-        paciente.add(consulta, Style.configurarConstraints(gbcPaciente,0,0,2,1,1,1,zero));
+        paciente.add(consultaPaciente, Style.configurarConstraints(gbcPaciente,0,0,2,1,1,1,zero));
 
         //imc
         paciente.add(label[2], Style.configurarConstraints(gbcPaciente,0,1,2,1, zero));
@@ -205,6 +207,43 @@ public class FramePlano extends JFrame {
 
         return backPanel;
     }
+    public JPanel consultaPaciente(){
+
+        try {
+            ImageIcon lupa = new ImageIcon("src/images/consultaIcon.png");
+            botaoConsultaPaciente.setIcon(lupa);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        botaoConsultaPaciente.setOpaque(true);
+        botaoConsultaPaciente.setBackground(verdeEscuro);
+        botaoConsultaPaciente.setBorder(loweredbevel);
+        botaoConsultaPaciente.setSize(24,24);
+        botaoConsultaPaciente.setFocusable(false);
+
+        botaoConsultaPaciente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FramePlano.this.setVisible(false);
+                FrameConsultaPaciente frameConsultaPaciente = new FrameConsultaPaciente((JFrame) FramePlano.this);
+                frameConsultaPaciente.setVisible(true);
+            }
+        });
+
+        txtConsultaPaciente.setEditable(false);
+        txtConsultaPaciente.setFocusable(false);
+        txtConsultaPaciente.setText("");
+
+        consultaPaciente.setBackground(transparente);
+        consultaPaciente.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        consultaPaciente.add(txtConsultaPaciente, configurarConstraints(c,0,0, 1,1,0.95,1, new Insets(5,5,5,5)));
+        consultaPaciente.add(botaoConsultaPaciente, configurarConstraints(c,1,0,1,1,0.05,1, new Insets(5,5,5,5)));
+
+        return consultaPaciente;
+    }
 
     // OUTROS ELEMENTOS
     public void label(){
@@ -284,6 +323,7 @@ public class FramePlano extends JFrame {
         logoPanel = logoPanel();
         formsPanel = formsPanel();
         backPanel = backPanel();
+        consultaPaciente = consultaPaciente();
 
     }
     public void limparTela(){
