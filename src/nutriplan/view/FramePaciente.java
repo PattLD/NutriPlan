@@ -3,6 +3,7 @@ package nutriplan.view;
 import nutriplan.controller.Conversao;
 import nutriplan.controller.PacienteController;
 import nutriplan.model.Paciente;
+import nutriplan.view.consulta.FrameConsultaPaciente;
 
 import javax.swing.*;  // Pacote para os componentes da GUI (JFrame, JButton, JLabel, etc.)
 import java.awt.*;     // Pacote para layouts e manipulação de gráficos
@@ -356,7 +357,8 @@ public class FramePaciente extends JFrame {
                 IMC = Paciente.calcularIMC(altura, peso);
                 TMB = Paciente.calcularTMB(sexo,altura,peso,idade);
                 GET = Paciente.calcularGET(atividade,TMB);
-                boolean sucesso;
+                boolean sucesso = false;
+
                 try {
                     if(FramePaciente.this.codPaciente == 0){
                         sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, idade, IMC, TMB, GET);

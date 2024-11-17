@@ -1,8 +1,11 @@
-package nutriplan.view;
+package nutriplan.view.consulta;
 
 import nutriplan.controller.PacienteController;
 import nutriplan.dao.ExceptionDAO;
 import nutriplan.model.Paciente;
+import nutriplan.view.FramePaciente;
+import nutriplan.view.FramePlano;
+import nutriplan.view.Style;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -209,14 +212,14 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
                     }
                 }
                     /*
-                    int codPaciente = (int) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 0);
-                    String nome = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 1);
-                    String CPF = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 2);
-                    String sexo = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 3);
-                    LocalDate dataNascimento = (LocalDate) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 4);
-                    double altura = (double) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 5);
-                    double peso = (double) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 6);
-                    String atividade = (String) tabelaPacientes.getModel().getValueAt(tabelaPacientes.getSelectedRow(), 7);
+                    int codPaciente = (int) tabelaPlano.getModel().getValueAt(tabelaPlano.getSelectedRow(), 0);
+                    String nome = (String) tabelaPlano.getModel().getValueAt(tabelaPlano.getSelectedRow(), 1);
+                    String CPF = (String) tabelaPlano.getModel().getValueAt(tabelaPlano.getSelectedRow(), 2);
+                    String sexo = (String) tabelaPlano.getModel().getValueAt(tabelaPlano.getSelectedRow(), 3);
+                    LocalDate dataNascimento = (LocalDate) tabelaPlano.getModel().getValueAt(tabelaPlano.getSelectedRow(), 4);
+                    double altura = (double) tabelaPlano.getModel().getValueAt(tabelaPlano.getSelectedRow(), 5);
+                    double peso = (double) tabelaPlano.getModel().getValueAt(tabelaPlano.getSelectedRow(), 6);
+                    String atividade = (String) tabelaPlano.getModel().getValueAt(tabelaPlano.getSelectedRow(), 7);
                     */
 
             }

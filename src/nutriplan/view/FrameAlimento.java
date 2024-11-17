@@ -2,6 +2,7 @@ package nutriplan.view;
 
 import nutriplan.controller.AlimentoController;
 import nutriplan.controller.Conversao;
+import nutriplan.view.consulta.FrameConsultaAlimento;
 
 import javax.swing.*;
 import java.awt.*;

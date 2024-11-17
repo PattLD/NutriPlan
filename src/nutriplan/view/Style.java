@@ -1,9 +1,11 @@
 package nutriplan.view;
 
+import nutriplan.view.consulta.FrameConsultaAlimento;
+import nutriplan.view.consulta.FrameConsultaPaciente;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;

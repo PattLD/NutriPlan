@@ -1,8 +1,11 @@
-package nutriplan.view;
+package nutriplan.view.consulta;
 
 import nutriplan.controller.AlimentoController;
 import nutriplan.dao.ExceptionDAO;
 import nutriplan.model.Alimento;
+import nutriplan.view.FrameAlimento;
+import nutriplan.view.FramePlanoAlimento;
+import nutriplan.view.Style;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

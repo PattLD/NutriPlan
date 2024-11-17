@@ -1,15 +1,14 @@
 package nutriplan.view;
 
-import nutriplan.controller.Conversao;
-import nutriplan.controller.PlanoController;
-import nutriplan.model.Plano;
+import nutriplan.view.consulta.FrameConsultaAlimento;
+import nutriplan.view.consulta.FrameConsultaPaciente;
+import nutriplan.view.consulta.FrameConsultaPlano;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLOutput;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -348,8 +347,8 @@ public class FramePlanoAlimento extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FramePlanoAlimento.this.setVisible(false);
-                FrameConsultaPaciente frameConsultaPaciente = new FrameConsultaPaciente((JFrame) FramePlanoAlimento.this);
-                frameConsultaPaciente.setVisible(true);
+                FrameConsultaPlano frameConsultaPlano = new FrameConsultaPlano((JFrame) FramePlanoAlimento.this);
+                frameConsultaPlano.setVisible(true);
             }
         });
 

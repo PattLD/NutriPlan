@@ -1,9 +1,9 @@
 package nutriplan.view;
 
 import nutriplan.controller.Conversao;
-import nutriplan.controller.PacienteController;
 import nutriplan.controller.PlanoController;
-import nutriplan.model.Paciente;
+import nutriplan.view.consulta.FrameConsultaPaciente;
+import nutriplan.view.consulta.FrameConsultaPlano;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +17,8 @@ import static nutriplan.view.Style.*;
 
 public class FramePlano extends JFrame {
 
-	private double kcal_necessaria;
-    private LocalDate data_criacao;
+	private double kcalNecessaria;
+    private LocalDate dataCriacao;
     private String objetivo;
 
     int codPaciente;
@@ -103,18 +103,18 @@ public class FramePlano extends JFrame {
         // GRID DO PAINEL CENTRAL
 
         // logo
-        mainPanel.add(logoPanel, Style.configurarConstraints(gbcCentral,0,0,1,0.08,new Insets(5, 5, 0, 5)));
+        mainPanel.add(logoPanel, configurarConstraints(gbcCentral,0,0,1,0.08,new Insets(5, 5, 0, 5)));
 
         // "montagem do plano alimentar"
-        mainPanel.add(label[0], Style.configurarConstraints(gbcCentral,0,1,1,0.01,new Insets(5, 5, 0, 5)));
+        mainPanel.add(label[0], configurarConstraints(gbcCentral,0,1,1,0.01,new Insets(5, 5, 0, 5)));
 
         //imput de alimentos
-        mainPanel.add(formsPanel, Style.configurarConstraints(gbcCentral,0,2,1,0.95,new Insets(0, 5, 5, 5)));
+        mainPanel.add(formsPanel, configurarConstraints(gbcCentral,0,2,1,0.95,new Insets(0, 5, 5, 5)));
 
         gbcCentral.insets = new Insets(5, 5, 5, 5);
 
         //voltar
-        mainPanel.add(backPanel, Style.configurarConstraints(gbcCentral,0,3,1,0.01,new Insets(5, 5, 5, 5)));
+        mainPanel.add(backPanel, configurarConstraints(gbcCentral,0,3,1,0.01,new Insets(5, 5, 5, 5)));
 
         return mainPanel;
     }
@@ -128,22 +128,22 @@ public class FramePlano extends JFrame {
 
 
         //CONSULTA
-        paciente.add(consultaPaciente, Style.configurarConstraints(gbcPaciente,0,0,2,1,1,1,zero));
+        paciente.add(consultaPaciente, configurarConstraints(gbcPaciente,0,0,2,1,1,1,zero));
 
         //imc
-        paciente.add(label[2], Style.configurarConstraints(gbcPaciente,0,1,2,1, zero));
+        paciente.add(label[2], configurarConstraints(gbcPaciente,0,1,2,1, zero));
         //
-        paciente.add(txtdook[1], Style.configurarConstraints(gbcPaciente,0,2,2,1,zero));
+        paciente.add(txtdook[1], configurarConstraints(gbcPaciente,0,2,2,1,zero));
 
         //tmb
-        paciente.add(label[3], Style.configurarConstraints(gbcPaciente,0,3,1,1, zero));
+        paciente.add(label[3], configurarConstraints(gbcPaciente,0,3,1,1, zero));
         //
-        paciente.add(txtdook[2], Style.configurarConstraints(gbcPaciente,0,4,1,1,new Insets(0,0,0,10)));
+        paciente.add(txtdook[2], configurarConstraints(gbcPaciente,0,4,1,1,new Insets(0,0,0,10)));
 
         //get
-        paciente.add(label[4], Style.configurarConstraints(gbcPaciente,1,3,1,1, zero));
+        paciente.add(label[4], configurarConstraints(gbcPaciente,1,3,1,1, zero));
         //
-        paciente.add(txtdook[3], Style.configurarConstraints(gbcPaciente,1,4,1,1,new Insets(0,0,0,0)));
+        paciente.add(txtdook[3], configurarConstraints(gbcPaciente,1,4,1,1,new Insets(0,0,0,0)));
 
 
         return paciente;
@@ -158,19 +158,19 @@ public class FramePlano extends JFrame {
 
 
         //data criacao
-        plano.add(label[6], Style.configurarConstraints(gbcPlano,0,0,1,1,1,0.01, insetsCima));
+        plano.add(label[6], configurarConstraints(gbcPlano,0,0,1,1,1,0.01, insetsCima));
         //
-        plano.add(txtdook[4], Style.configurarConstraints(gbcPlano,0,1,1,1,1,0.01,insetsBaixo));
+        plano.add(txtdook[4], configurarConstraints(gbcPlano,0,1,1,1,1,0.01,insetsBaixo));
 
         //kcal diario
-        plano.add(label[7], Style.configurarConstraints(gbcPlano,1,0,1,1,1,0.01,insetsCima));
+        plano.add(label[7], configurarConstraints(gbcPlano,1,0,1,1,1,0.01,insetsCima));
         //
-        plano.add(txtdook[5], Style.configurarConstraints(gbcPlano,1,1,1,1,1,0.01,insetsBaixo));
+        plano.add(txtdook[5], configurarConstraints(gbcPlano,1,1,1,1,1,0.01,insetsBaixo));
 
         //objetivo
-        plano.add(label[8], Style.configurarConstraints(gbcPlano,0,2,2,1,1,0.01, insetsCima));
+        plano.add(label[8], configurarConstraints(gbcPlano,0,2,2,1,1,0.01, insetsCima));
         //
-        plano.add(txtObjetivo, Style.configurarConstraints(gbcPlano,0,3,2,1,1,0.9,insetsBaixo));
+        plano.add(txtObjetivo, configurarConstraints(gbcPlano,0,3,2,1,1,0.9,insetsBaixo));
 
         return plano;
     }
@@ -187,14 +187,14 @@ public class FramePlano extends JFrame {
 
         // GRID DO PAINEL DADOS
         //PACIENTE
-        formsPanel.add(label[1], Style.configurarConstraints(gbcForms,0,0,1,1,1,0.01,zero));
+        formsPanel.add(label[1], configurarConstraints(gbcForms,0,0,1,1,1,0.01,zero));
 
-        formsPanel.add(paciente, Style.configurarConstraints(gbcForms,0,1,1,1,1,0.2, new Insets(10,10,10,10)));
+        formsPanel.add(paciente, configurarConstraints(gbcForms,0,1,1,1,1,0.2, new Insets(10,10,10,10)));
 
         //PLANO
-        formsPanel.add(label[5], Style.configurarConstraints(gbcForms,0,2,1,1,1,0.01, zero));
+        formsPanel.add(label[5], configurarConstraints(gbcForms,0,2,1,1,1,0.01, zero));
 
-        formsPanel.add(plano, Style.configurarConstraints(gbcForms,0,3,1,1,1,0.8, new Insets(10,10,10,10)));
+        formsPanel.add(plano, configurarConstraints(gbcForms,0,3,1,1,1,0.8, new Insets(10,10,10,10)));
 
         return formsPanel;
     }
@@ -255,9 +255,9 @@ public class FramePlano extends JFrame {
             label[i].setHorizontalAlignment(SwingConstants.LEFT);
         }
 
-        label[0] = Style.titulo("Cadastro de Plano");
+        label[0] = titulo("Cadastro de Plano");
 
-        label[1] = Style.titulo2("PACIENTE");
+        label[1] = titulo2("PACIENTE");
 
 
         label[2].setText("IMC");
@@ -267,7 +267,7 @@ public class FramePlano extends JFrame {
         label[4].setText("Gasto Energético Total (GET)");
         label[4].setFont(FONT_REGULAR_10);
 
-        label[5] = Style.titulo2("PLANO");
+        label[5] = titulo2("PLANO");
 
         label[6].setText("Data de criação");
         label[7].setText("Calorias Diárias (kcal)");
@@ -364,7 +364,9 @@ public class FramePlano extends JFrame {
     public void consultar() {
         button[1].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                FramePlano.this.setVisible(false);
+                FrameConsultaPlano frameConsultaPlano = new FrameConsultaPlano(FramePlano.this);
+                frameConsultaPlano.setVisible(true);
             }
         });
     }
@@ -376,31 +378,25 @@ public class FramePlano extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 PlanoController planoController = new PlanoController();
 
-//                nome = txtdook[0].getText();
-//                CPF = txtdook[1].getText();
-//                sexo = (String) gender.getSelectedItem();
-//                dataNascimento = Conversao.converterLocalDate(txtdook[2]);
-//                altura = Conversao.converterDouble(txtdook[3]);
-//                peso = Conversao.converterDouble(txtdook[4]);
-//                atividade = (String) exerciseFrequency.getSelectedItem();
-//                objetivo = txtObjetivo.getText();
-//
-//                idade = Paciente.calcularIdade(dataNascimento);
-//                IMC = Paciente.calcularIMC(altura, peso);
-//                TMB = Paciente.calcularTMB(sexo,altura,peso,idade);
-//                GET = Paciente.calcularGET(atividade,TMB);
-//
-//                try {
-//                    boolean sucesso = pacienteController.cadastrarPaciente(nome, CPF, sexo, dataNascimento, altura, peso, atividade, objetivo, idade, IMC, TMB, GET);
-//                    if(sucesso){
-//                        JOptionPane.showMessageDialog(null,"O paciente foi cadastrado com sucesso!");
-//                        limparTela();
-//                    } else {
-//                        JOptionPane.showMessageDialog(null,"Os campos não foram preenchidos corretamente.");
-//                    }
-//                } catch (Exception ex) {
-//                    JOptionPane.showMessageDialog(null,"Erro: " + ex.getMessage());
-//                }
+                dataCriacao = Conversao.converterLocalDate(txtdook[4]);
+                kcalNecessaria = Conversao.converterDouble(txtdook[5]);
+                objetivo = txtObjetivo.getText();
+
+                boolean sucesso;
+
+                try {
+
+                    sucesso = planoController.cadastrarPlano(FramePlano.this.codPaciente, kcalNecessaria,dataCriacao,objetivo);
+
+                    if(sucesso){
+                        JOptionPane.showMessageDialog(null,"O plano foi cadastrado com sucesso!");
+                        limparTela();
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Os campos não foram preenchidos corretamente.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,"Erro: " + ex.getMessage());
+                }
 
             }
         });
