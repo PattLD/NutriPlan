@@ -1,6 +1,5 @@
 package nutriplan.dao;
 
-import nutriplan.model.Plano;
 import nutriplan.model.PlanoAlimento;
 
 import java.sql.*;
@@ -8,7 +7,7 @@ import java.sql.*;
 public class PlanoAlimentoDAO {
 
     public void montarPlanoAlimento(PlanoAlimento planoAlimento) throws ExceptionDAO {
-        String sql = "insert into plano_alimento (id_plano, id_alimento, quantidade) values (?,?,?)";
+        String sql = "insert into plano_alimento (id_plano, id_alimento, quantidade, kcal_alimento) values (?,?,?,?)";
         PreparedStatement pStatement = null;
         Connection connection = null;
 
@@ -17,7 +16,8 @@ public class PlanoAlimentoDAO {
             pStatement = connection.prepareStatement(sql);
             pStatement.setInt(1, planoAlimento.getPlano().getCodPlano());
             pStatement.setInt(2, planoAlimento.getAlimento().getCodAlimento());
-            pStatement.setDouble(3, planoAlimento.getQuantidade());
+            pStatement.setDouble(3, planoAlimento.getGramasComida());
+            pStatement.setDouble(4, planoAlimento.getKcalComida());
 
             pStatement.executeUpdate();
         } catch (SQLException e){

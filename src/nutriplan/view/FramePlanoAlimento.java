@@ -1,6 +1,7 @@
 package nutriplan.view;
 
 import nutriplan.controller.Conversao;
+import nutriplan.controller.PlanoAlimentoController;
 import nutriplan.model.PlanoAlimento;
 import nutriplan.view.consulta.FrameConsultaAlimento;
 import nutriplan.view.consulta.FrameConsultaPaciente;
@@ -419,7 +420,6 @@ public class FramePlanoAlimento extends JFrame {
         }
 
         //TITULOS
-//        title[0].setTitle("Nome");
         title[1].setTitle("Sexo");
         title[2].setTitle("Idade");
         title[3].setTitle("IMC");
@@ -435,17 +435,15 @@ public class FramePlanoAlimento extends JFrame {
             label[j].setBorder(title[i]);
         }
 
-//        consultaPaciente.setBorder(title[0]);
-//        label[1].setText("Nome");
-        label[2].setText("Sexo");
-        label[3].setText("Idade");
-        label[4].setText("IMC");
-        label[5].setText("Peso");
-        label[6].setText("Altura:");
-        label[7].setText("Objetivo:");
-        label[8].setText("Nivel de atividade:");
-        label[9].setText("Taxa Metabólica Basal (TMB):");
-        label[10].setText("Gasto Energético Total (GET):");
+        label[2].setText(" ");
+        label[3].setText(" ");
+        label[4].setText(" ");
+        label[5].setText(" ");
+        label[6].setText(" ");
+        label[7].setText(" ");
+        label[8].setText(" ");
+        label[9].setText(" ");
+        label[10].setText(" ");
 
         //OUTROS LABEL
 
@@ -515,9 +513,26 @@ public class FramePlanoAlimento extends JFrame {
         consultaAlimento = consultaAlimento();
     }
     public void limparTela(){
-        txtdook[0].setText("");
+        this.gramasComida = 0;
+        this.kcal100 = 0;
+        this.kcalComida = 0;
+        this.codComida = 0;
+        this.codPlano = 0;
+        this.txtConsultaAlimento.setText("");
+        this.txtConsultaPaciente.setText("");
+        label[2].setText(" ");
+        label[3].setText(" ");
+        label[4].setText(" ");
+        label[5].setText(" ");
+        label[6].setText(" ");
+        label[7].setText(" ");
+        label[8].setText(" ");
+        label[9].setText(" ");
+        label[10].setText(" ");
+        txtdook[1].setText("");
+        txtdook[3].setText("");
         txtdook[2].setText("");
-        txtdook[4].setText("");
+        txtdook[5].setText("");
     }
     public void fecharJanela(){
         this.dispose();
@@ -552,6 +567,7 @@ public class FramePlanoAlimento extends JFrame {
     public void adicionar(){
         button[0].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                PlanoAlimentoController planoAlimentoController = new PlanoAlimentoController();
 
                 gramasComida = Conversao.converterDouble(txtdook[2]);
 
@@ -566,6 +582,21 @@ public class FramePlanoAlimento extends JFrame {
                 System.out.println("kcal da comida: " +kcalComida);
                 System.out.println("id plano: " +codPlano);
                 System.out.println("id comida: " +codComida);
+
+                boolean sucesso;
+
+                try {
+                    sucesso = planoAlimentoController.montarPlanoAlimento(codComida,codPlano,kcalComida,gramasComida);
+
+                    if(sucesso){
+                        JOptionPane.showMessageDialog(null,"O plano foi cadastrado com sucesso!");
+                        limparTela();
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Os campos não foram preenchidos corretamente.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,"Erro: " + ex.getMessage());
+                }
 
 
             }
