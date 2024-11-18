@@ -1,5 +1,7 @@
 package nutriplan.view;
 
+import nutriplan.controller.Conversao;
+import nutriplan.model.PlanoAlimento;
 import nutriplan.view.consulta.FrameConsultaAlimento;
 import nutriplan.view.consulta.FrameConsultaPaciente;
 import nutriplan.view.consulta.FrameConsultaPlano;
@@ -18,11 +20,11 @@ import static nutriplan.view.Style.*;
 
 public class FramePlanoAlimento extends JFrame {
 
-    String nomeComida = "";
     double gramasComida = 0;
     double kcal100 = 0;
     double kcalComida = 0;
     int codComida;
+    int codPlano;
 
     JPanel mainPanel = new JPanel();
     JPanel dadosPanel = new JPanel();
@@ -523,8 +525,25 @@ public class FramePlanoAlimento extends JFrame {
             mainFrame.setVisible(true); // Exibe o mainFrame novamente
         }
     }
-    public void buscarAlimento(int codComida, String nomeComida) {
+    public void buscarPlano(String nome, String sexo, int idade, double IMC, double altura, double peso, String atividade, double TMB, double GET, double kcalNecessarias, String objetivo, int codPlano) {
+        this.codPlano = codPlano;
+        this.txtConsultaPaciente.setText(nome);
+        label[2].setText(sexo);
+        label[3].setText(String.valueOf(idade));
+        label[4].setText(String.valueOf(IMC));
+        label[5].setText(String.valueOf(peso));
+        label[6].setText(String.valueOf(altura));
+        label[7].setText(objetivo);
+        label[8].setText(atividade);
+        label[9].setText(String.valueOf(TMB));
+        label[10].setText(String.valueOf(GET));
+        txtdook[5].setText(String.valueOf(kcalNecessarias));
+
+
+    }
+    public void buscarAlimento(int codComida, String nomeComida, double kcal100) {
         this.codComida = codComida;
+        this.kcal100 = kcal100;
         this.txtConsultaAlimento.setText(nomeComida);
 
     }
@@ -534,6 +553,19 @@ public class FramePlanoAlimento extends JFrame {
         button[0].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                gramasComida = Conversao.converterDouble(txtdook[2]);
+
+                try {
+                    kcalComida = PlanoAlimento.calcularKcalComida(gramasComida, kcal100);
+                } catch (IllegalArgumentException evt) {
+                    System.out.println("Erro: " + evt.getMessage());
+                }
+
+                System.out.println("quantidade: " +gramasComida);
+                System.out.println("kcal 100: " +kcal100);
+                System.out.println("kcal da comida: " +kcalComida);
+                System.out.println("id plano: " +codPlano);
+                System.out.println("id comida: " +codComida);
 
 
             }

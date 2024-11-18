@@ -11,7 +11,7 @@ public class Alimento {
     private String nomeComida;
     private double kcal100;
 
-    private ArrayList<Plano> planos = new ArrayList<Plano>();
+    private ArrayList<PlanoAlimento> planoAlimentos = new ArrayList<PlanoAlimento>();
 
     public Alimento(String nomeComida, double kcal100) {
         this.nomeComida = nomeComida;
@@ -32,8 +32,8 @@ public class Alimento {
     public double getKcal100() {
         return kcal100;
     }
-    public ArrayList<Plano> getPlanos() {
-        return planos;
+    public ArrayList<PlanoAlimento> getPlanoAlimentos() {
+        return planoAlimentos;
     }
 
     //SETTERS
@@ -46,7 +46,9 @@ public class Alimento {
     public void setKcal100(double kcal100) {
         this.kcal100 = kcal100;
     }
-    public void setPlanos(ArrayList<Plano> planos) { this.planos = planos; }
+    public void setPlanoAlimentos(ArrayList<PlanoAlimento> planoAlimentos) {
+        this.planoAlimentos = planoAlimentos;
+    }
 
     //METODOS
     public void cadastrarAlimento(Alimento alimento) throws ExceptionDAO {

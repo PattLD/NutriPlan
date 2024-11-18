@@ -177,7 +177,7 @@ public class FrameConsultaPaciente extends javax.swing.JFrame {
                         if (telaCadastro instanceof FramePaciente) {
                             FramePaciente framePaciente = (FramePaciente) telaCadastro;
 
-                            // Envie todos os dados, incluindo IMC, TMB e GET
+
                             framePaciente.buscarPaciente(
                                     pacienteSelecionado.getCodPaciente(),
                                     pacienteSelecionado.getNome(),

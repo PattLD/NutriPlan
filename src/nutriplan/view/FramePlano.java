@@ -22,6 +22,7 @@ public class FramePlano extends JFrame {
     private String objetivo;
 
     int codPaciente;
+    int codPlano;
 
     JPanel paciente = new JPanel();
     JPanel plano = new JPanel();
@@ -334,6 +335,7 @@ public class FramePlano extends JFrame {
         txtdook[2].setText("");
         txtdook[3].setText("");
         txtdook[4].setText("");
+        txtdook[5].setText("");
         txtObjetivo.setText("");
         txtConsultaPaciente.setText("");
     }
@@ -345,13 +347,27 @@ public class FramePlano extends JFrame {
     }
     public void buscarPaciente (int codPaciente, String nome, double IMC, double TMC, double GET){
         this.codPaciente = codPaciente;
+        System.out.println("codigo do paciente "+codPaciente);
         txtConsultaPaciente.setText(nome);
         txtdook[1].setText(String.valueOf(IMC));
         txtdook[2].setText(String.valueOf(TMC));
         txtdook[3].setText(String.valueOf(GET));
     }
+    public void buscarPlano (int codPaciente, String nome, double IMC, double TMC, double GET, LocalDate dataCriacao, double kcalNecessaria, String objetivo, int codPlano){
+        this.codPaciente = codPaciente;
+        this.codPlano = codPlano;
+        System.out.println("codigo do plano "+codPlano);
+        System.out.println("codigo do paciente "+codPaciente);
+        txtConsultaPaciente.setText(nome);
+        txtdook[1].setText(String.valueOf(IMC));
+        txtdook[2].setText(String.valueOf(TMC));
+        txtdook[3].setText(String.valueOf(GET));
+        txtdook[4].setText(Conversao.converterDateString(dataCriacao));
+        txtdook[5].setText(String.valueOf(kcalNecessaria));
+        txtObjetivo.setText(objetivo);
+    }
 
-    // BOTOES
+    // BOTOESv
     public void voltar() {
         button[0].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -385,8 +401,11 @@ public class FramePlano extends JFrame {
                 boolean sucesso;
 
                 try {
-
-                    sucesso = planoController.cadastrarPlano(FramePlano.this.codPaciente, kcalNecessaria,dataCriacao,objetivo);
+                    if(FramePlano.this.codPlano == 0) {
+                        sucesso = planoController.cadastrarPlano(FramePlano.this.codPaciente, kcalNecessaria, dataCriacao, objetivo);
+                    } else {
+                        sucesso = planoController.alterarPlano(FramePlano.this.codPlano,FramePlano.this.codPaciente,kcalNecessaria, dataCriacao, objetivo);
+                    }
 
                     if(sucesso){
                         JOptionPane.showMessageDialog(null,"O plano foi cadastrado com sucesso!");

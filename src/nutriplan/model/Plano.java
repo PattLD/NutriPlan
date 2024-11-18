@@ -1,6 +1,7 @@
 package nutriplan.model;
 
 import nutriplan.dao.ExceptionDAO;
+import nutriplan.dao.PacienteDAO;
 import nutriplan.dao.PlanoDAO;
 
 import java.time.LocalDate;
@@ -8,18 +9,15 @@ import java.util.ArrayList;
 
 public class Plano {
 
-    private int kcalAdicionado;
-
     private int codPlano;
     private double kcalNecessarias;
     private LocalDate dataCriacao;
     private String objetivo;
 
     private Paciente paciente;
-    private ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
+    private ArrayList<PlanoAlimento> planoAlimentos = new ArrayList<PlanoAlimento>();
 
     public Plano(int codPaciente, double kcalNecessaria, LocalDate dataCriacao, String objetivo) {
-        this.kcalNecessarias = kcalNecessaria;
         this.dataCriacao = dataCriacao;
         this.objetivo = objetivo;
         Paciente paciente = new Paciente();
@@ -27,10 +25,11 @@ public class Plano {
         this.paciente = paciente;
     }
 
-    //GETTERS
-    public int getKcalAdicionado() {
-        return kcalAdicionado;
+    public Plano() {
+
     }
+
+    //GETTERS
     public int getCodPlano() {
         return codPlano;
     }
@@ -46,15 +45,12 @@ public class Plano {
     public Paciente getPaciente() {
         return paciente;
     }
-    public ArrayList<Alimento> getAlimentos() {
-        return alimentos;
+    public ArrayList<PlanoAlimento> getPlanoAlimentos() {
+        return planoAlimentos;
     }
 
 
     //SETTERS
-    public void setKcalAdicionado(int kcalAdicionado) {
-        this.kcalAdicionado = kcalAdicionado;
-    }
     public void setCodPlano(int codPlano) {
         this.codPlano = codPlano;
     }
@@ -70,20 +66,22 @@ public class Plano {
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
-    public void setAlimentos(ArrayList<Alimento> alimentos) {
-        this.alimentos = alimentos;
+    public void setPlanoAlimento(PlanoAlimento planoAlimento) {
+        this.planoAlimentos.add(planoAlimento);
     }
 
     //METODOS
-    public static double calcularKcalComida(double gramasComida, double kcal100) {
-        double kcal= (gramasComida/100) * kcal100;
-        return kcal;
-    }
-
     public void cadastrarPlano(Plano plano) throws ExceptionDAO {
         new PlanoDAO().cadastrarPlano(plano);
     }
 
+    public ArrayList<Plano> listarPlanos(String nome) throws ExceptionDAO {
+        return new PlanoDAO().listarPlanos(nome);
+    }
+
+    public void alterarPlano(Plano plano) throws ExceptionDAO {
+        new PlanoDAO().alterarPlano(plano);
+    }
 
 
 //    public void montarDieta() {

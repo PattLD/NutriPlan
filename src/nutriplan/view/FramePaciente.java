@@ -298,6 +298,7 @@ public class FramePaciente extends JFrame {
     }
     public void buscarPaciente (int codPaciente, String nome, String CPF, String sexo, LocalDate dataNascimento, double altura, double peso, String atividade){
         this.codPaciente = codPaciente;
+        System.out.println("codigo do paciente "+codPaciente);
         txtdook[0].setText(nome);
         txtdook[1].setText(CPF);
         for (int i=0;i<gender.getItemCount();i++){

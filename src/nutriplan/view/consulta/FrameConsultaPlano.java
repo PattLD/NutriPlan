@@ -1,6 +1,11 @@
 package nutriplan.view.consulta;
 
+import nutriplan.controller.PlanoController;
+import nutriplan.dao.ExceptionDAO;
 import nutriplan.model.Paciente;
+import nutriplan.model.Plano;
+import nutriplan.view.FramePlano;
+import nutriplan.view.FramePlanoAlimento;
 import nutriplan.view.Style;
 
 import javax.swing.*;
@@ -9,6 +14,8 @@ import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static nutriplan.view.Style.*;
 
@@ -29,7 +36,7 @@ public class FrameConsultaPlano extends JFrame {
 
     private JFrame telaCadastro;
 
-    ArrayList<Paciente> listaPacientes;
+    ArrayList<Plano> listaPlanos;
 
     public FrameConsultaPlano(JFrame telaCadastro) {
         inicializarComponentes();
@@ -158,8 +165,83 @@ public class FrameConsultaPlano extends JFrame {
 
 
     }
-    public void clicarTabela(){
+    public void clicarTabela() {
+        tabelaPlano.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    // Obtém o índice da linha selecionada
+                    int selectedRow = tabelaPlano.getSelectedRow();
 
+                    // Verifica se uma linha válida foi selecionada
+                    if (selectedRow < 0) {
+                        System.out.println("Erro: Nenhuma linha selecionada.");
+                        return;
+                    }
+
+                    try {
+                        // Coleta o código do plano diretamente da coluna correspondente (exemplo: coluna 0)
+                        int codPlano = (int) tabelaPlano.getValueAt(selectedRow, 0);
+
+                        // Usa o código do plano para buscar os outros dados
+                        Plano planoSelecionado = listaPlanos.stream()
+                                .filter(plano -> plano.getCodPlano() == codPlano)
+                                .findFirst()
+                                .orElse(null);
+
+                        if (planoSelecionado == null) {
+                            System.out.println("Erro: Plano com código " + codPlano + " não encontrado.");
+                            return;
+                        }
+
+
+                        if (telaCadastro instanceof FramePlano) {
+                            FramePlano framePlano = (FramePlano) telaCadastro;
+
+                            framePlano.buscarPlano(
+                                    planoSelecionado.getPaciente().getCodPaciente(),
+                                    planoSelecionado.getPaciente().getNome(),
+                                    planoSelecionado.getPaciente().getIMC(),
+                                    planoSelecionado.getPaciente().getTMB(),
+                                    planoSelecionado.getPaciente().getGET(),
+                                    planoSelecionado.getDataCriacao(),
+                                    planoSelecionado.getKcalNecessarias(),
+                                    planoSelecionado.getObjetivo(),
+                                    planoSelecionado.getCodPlano()
+                            );
+
+                            framePlano.setVisible(true);
+                            FrameConsultaPlano.this.dispose();
+                        } else if (telaCadastro instanceof FramePlanoAlimento) {
+                            FramePlanoAlimento framePlanoAlimento = (FramePlanoAlimento) telaCadastro;
+
+                            framePlanoAlimento.buscarPlano(
+                                    planoSelecionado.getPaciente().getNome(),
+                                    planoSelecionado.getPaciente().getSexo(),
+                                    planoSelecionado.getPaciente().getIdade(),
+                                    planoSelecionado.getPaciente().getIMC(),
+                                    planoSelecionado.getPaciente().getAltura(),
+                                    planoSelecionado.getPaciente().getPeso(),
+                                    planoSelecionado.getPaciente().getAtividade(),
+                                    planoSelecionado.getPaciente().getTMB(),
+                                    planoSelecionado.getPaciente().getGET(),
+                                    planoSelecionado.getKcalNecessarias(),
+                                    planoSelecionado.getObjetivo(),
+                                    planoSelecionado.getCodPlano()
+                            );
+
+                            framePlanoAlimento.setVisible(true);
+                            FrameConsultaPlano.this.dispose();
+
+                        } else {
+                            System.out.println("Erro: telaCadastro não é uma instância esperada.");
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Erro ao processar a linha selecionada: " + ex.getMessage());
+                    }
+                }
+            }
+        });
     }
     public void fecharJanela(){
         this.dispose();
@@ -171,7 +253,24 @@ public class FrameConsultaPlano extends JFrame {
     public void botaoConsultaAcao(){
         botaoConsulta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                String nome = pesquisaPlano.getText();
+                modelTabela.setRowCount(0);
+                PlanoController planoController = new PlanoController();
+                try {
+                    listaPlanos = planoController.listarPlanos(nome);
+                    listaPlanos.forEach((Plano plano) -> {
+                        modelTabela.addRow(new Object[]{
+                                plano.getCodPlano(),
+                                plano.getPaciente().getNome(),
+                                plano.getKcalNecessarias(),
+                                plano.getDataCriacao(),
+                                plano.getObjetivo()
+                        });
+                    });
+                    tabelaPlano.setModel(modelTabela);
+                } catch (ExceptionDAO evt) {
+                    Logger.getLogger(FrameConsultaPlano.class.getName()).log(Level.SEVERE, null, evt);
+                }
             }
         });
     }

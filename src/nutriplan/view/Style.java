@@ -28,8 +28,8 @@ public class Style {
 
     public static int numLabel = 30;
     public static int numPanel = 10;
-    public static int numButton = 5;
-    public static int numTxtdook = 6;
+    public static int numButton = 10;
+    public static int numTxtdook = 10;
 
     //FONTS
     public static final Font FONT_REGULAR_12 = new Font("Courier", Font.PLAIN, 12);

@@ -176,7 +176,7 @@ public class FrameConsultaAlimento extends JFrame {
                         FrameConsultaAlimento.this.dispose();
                     } else if (telaCadastro instanceof FramePlanoAlimento) {
                         FramePlanoAlimento framePlanoAlimento = (FramePlanoAlimento) telaCadastro;
-                        framePlanoAlimento.buscarAlimento(codAlimento,nomeComida);
+                        framePlanoAlimento.buscarAlimento(codAlimento,nomeComida,kcal100);
                         framePlanoAlimento.setVisible(true);
                         FrameConsultaAlimento.this.dispose();
                     } else {
