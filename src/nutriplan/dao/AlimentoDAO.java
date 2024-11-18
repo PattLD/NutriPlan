@@ -23,7 +23,11 @@ public class AlimentoDAO {
 
             pStatement.executeUpdate();
         } catch (SQLException e){
-            throw new ExceptionDAO("Erro ao cadastrar o alimento: " + e.getMessage());
+            if (e.getSQLState().equals("23000")) { // SQLState 23000 -> Violação de restrição
+                throw new ExceptionDAO("Alimento já está cadastrado!");
+            } else {
+                throw new ExceptionDAO("\"Erro ao cadastrar o alimento: " + e.getMessage());
+            }
         } finally {
 
             try {
@@ -39,7 +43,6 @@ public class AlimentoDAO {
         }
 
     }
-
 
     public ArrayList<Alimento> listarAlimentos(String nome) throws ExceptionDAO {
         String sql = "select * from alimento WHERE nome_alimento like '%" + nome + "%' order by nome_alimento";
@@ -82,4 +85,36 @@ public class AlimentoDAO {
 
         return alimentos;
     }
+
+    public void alterarAlimento(Alimento alimento) throws ExceptionDAO {
+        String sql = "update alimento set nome_alimento=?,kcal100=? where id_alimento=?";
+        PreparedStatement pStatement = null;
+        Connection connection = null;
+
+        try {
+            connection = new ConnectionDAO().getConnection();
+            pStatement = connection.prepareStatement(sql);
+            pStatement.setString(1, alimento.getNomeComida());
+            pStatement.setDouble(2, alimento.getKcal100());
+            pStatement.setInt(3, alimento.getCodAlimento());
+
+            pStatement.executeUpdate();
+        } catch (SQLException e){
+            throw new ExceptionDAO("\"Erro ao alterar o alimento: " + e.getMessage());
+        } finally {
+
+            try {
+                if (pStatement != null) {pStatement.close();}
+            } catch (SQLException e){
+                throw new ExceptionDAO("Erro ao fechar Statement: " + e.getMessage());
+            } try {
+                if (connection != null) {connection.close();}
+            } catch (SQLException e){
+                throw new ExceptionDAO("Erro ao fechar o conexão: " + e.getMessage());
+            }
+
+        }
+
+    }
+
 }

@@ -29,7 +29,11 @@ public class PacienteDAO {
 
             pStatement.executeUpdate();
         } catch (SQLException e){
-            throw new ExceptionDAO("Erro ao cadastrar o paciente: " + e.getMessage());
+            if (e.getSQLState().equals("23000")) { // SQLState 23000 -> Violação de restrição
+                throw new ExceptionDAO("CPF já está cadastrado!");
+            } else {
+                throw new ExceptionDAO("Erro ao cadastrar o paciente: " + e.getMessage());
+            }
         } finally {
 
             try {
@@ -134,18 +138,34 @@ public class PacienteDAO {
     }
 
     public void apagarPaciente(Paciente paciente) throws ExceptionDAO {
-        String sql = "delete from pessoa where id_pessoa=?";
+        String deletePlanoAlimentoSQL = "DELETE FROM plano_alimento WHERE id_plano IN (SELECT id_plano FROM plano WHERE id_pessoa=?)";
+        String deletePlanoSQL = "DELETE FROM plano WHERE id_pessoa=?";
+        String deletePessoaSQL = "DELETE FROM pessoa WHERE id_pessoa=?";
         PreparedStatement pStatement = null;
         Connection connection = null;
 
         try {
             connection = new ConnectionDAO().getConnection();
-            pStatement = connection.prepareStatement(sql);
+            // Exclui os registros da tabela planoAlimento
+            pStatement = connection.prepareStatement(deletePlanoAlimentoSQL);
             pStatement.setInt(1, paciente.getCodPaciente());
+            pStatement.executeUpdate();
+            pStatement.close();
+
+            // Excluir registros da tabela plano
+            pStatement = connection.prepareStatement(deletePlanoSQL);
+            pStatement.setInt(1, paciente.getCodPaciente());
+            pStatement.executeUpdate();
+            pStatement.close();
+
+            // Excluir registros da tabela pessoa
+            pStatement = connection.prepareStatement(deletePessoaSQL);
+            pStatement.setInt(1, paciente.getCodPaciente());
+            pStatement.executeUpdate();
 
             pStatement.executeUpdate();
         } catch (SQLException e){
-            throw new ExceptionDAO("Erro ao cadastrar o paciente: " + e.getMessage());
+            throw new ExceptionDAO("Erro ao deletar o paciente: " + e.getMessage());
         } finally {
 
             try {

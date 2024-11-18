@@ -2,6 +2,7 @@ package nutriplan.view;
 
 import nutriplan.controller.Conversao;
 import nutriplan.controller.PacienteController;
+import nutriplan.dao.ExceptionDAO;
 import nutriplan.model.Paciente;
 import nutriplan.view.consulta.FrameConsultaPaciente;
 
@@ -9,6 +10,8 @@ import javax.swing.*;  // Pacote para os componentes da GUI (JFrame, JButton, JL
 import java.awt.*;     // Pacote para layouts e manipulação de gráficos
 import java.awt.event.*;  // Pacote para manipulação de eventos (ActionListener)
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static nutriplan.view.Style.*;
 
@@ -338,7 +341,25 @@ public class FramePaciente extends JFrame {
     public void limpar() {
         button[2].addActionListener(e -> limparTela());
     }
-    public void deletar(){}
+    public void deletar(){
+        button[3].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                boolean sucesso;
+                PacienteController pacienteController = new PacienteController();
+                try {
+                    sucesso = pacienteController.apagarPaciente(FramePaciente.this.codPaciente);
+                    if (sucesso){
+                        JOptionPane.showMessageDialog(null, "Paciente apagado com sucesso!");
+                        FramePaciente.this.limparTela();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erro ao apagar o paciente. Por favor, selecione um paciente!");
+                    }
+                } catch (ExceptionDAO ex) {
+                    Logger.getLogger(FramePaciente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
     public void salvar(){
         button[4].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

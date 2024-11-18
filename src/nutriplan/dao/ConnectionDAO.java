@@ -16,7 +16,7 @@ public class ConnectionDAO {
         }
 
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nutricionista_teste?useSSL=false", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nutricionista?useSSL=false", "root", "");
             if (con != null) {
                 System.out.println("Conexao estabelecida com sucesso!");
             } else {

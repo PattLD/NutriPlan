@@ -20,6 +20,7 @@ public class Plano {
     public Plano(int codPaciente, double kcalNecessaria, LocalDate dataCriacao, String objetivo) {
         this.dataCriacao = dataCriacao;
         this.objetivo = objetivo;
+        this.kcalNecessarias = kcalNecessaria;
         Paciente paciente = new Paciente();
         paciente.setCodPaciente(codPaciente);
         this.paciente = paciente;

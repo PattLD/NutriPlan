@@ -54,6 +54,11 @@ public class Alimento {
     public void cadastrarAlimento(Alimento alimento) throws ExceptionDAO {
         new AlimentoDAO().cadastrarAlimento(alimento);
     }
+
+    public void alterarAlimento(Alimento alimento) throws ExceptionDAO {
+        new AlimentoDAO().alterarAlimento(alimento);
+    }
+
     public ArrayList<Alimento> listarAlimentos(String nome) throws ExceptionDAO {
         return new AlimentoDAO().listarAlimentos(nome);
     }

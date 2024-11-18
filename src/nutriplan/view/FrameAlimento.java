@@ -238,8 +238,13 @@ public class FrameAlimento extends JFrame {
                 nomeComida = txtdook[0].getText();
                 kcal100 = Conversao.converterDouble(txtdook[1]);
 
+                boolean sucesso;
                 try {
-                    boolean sucesso = alimentoController.cadastrarAlimento(nomeComida, kcal100);
+                    if(FrameAlimento.this.codComida == 0){
+                        sucesso = alimentoController.cadastrarAlimento(nomeComida, kcal100);
+                    } else {
+                        sucesso = alimentoController.alterarAlimento(FrameAlimento.this.codComida, nomeComida, kcal100);
+                    }
                     if(sucesso){
                         JOptionPane.showMessageDialog(null,"O alimento foi cadastrado com sucesso!");
                         limparTela();

@@ -41,6 +41,7 @@ public class PacienteController {
         }
 
     }
+
     public boolean apagarPaciente(int codPaciente) throws ExceptionDAO{
         if(codPaciente == 0){
             return false;

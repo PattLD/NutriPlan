@@ -19,6 +19,21 @@ public class AlimentoController {
         }
 
     }
+
+    public static boolean alterarAlimento(int codAlimento, String nomeComida, double kcal100) throws ExceptionDAO {
+
+
+        if(codAlimento >0 && nomeComida != null && nomeComida.length() >0 && kcal100 >0){
+            Alimento alimento = new Alimento(nomeComida, kcal100);
+            alimento.setCodAlimento(codAlimento);
+            alimento.alterarAlimento(alimento);
+            return true;
+        } else{
+            return false;
+        }
+
+    }
+
     public ArrayList<Alimento> listarAlimentos(String nome) throws ExceptionDAO{
         return new Alimento().listarAlimentos(nome);
     }
