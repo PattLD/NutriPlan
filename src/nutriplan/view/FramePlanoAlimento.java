@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.Data;
 
 import static nutriplan.view.Style.*;
 
@@ -43,6 +44,8 @@ public class FramePlanoAlimento extends JFrame {
     JTextField txtConsultaAlimento = new JTextField();
 
     JScrollPane tabela = new JScrollPane();
+    DefaultTableModel modelTabela = new DefaultTableModel();
+    JTable tabelaAlimentos = new JTable(modelTabela);
 
     JLabel[] label = new JLabel[numLabel];
     TitledBorder[] title = new TitledBorder[numLabel];
@@ -163,7 +166,7 @@ public class FramePlanoAlimento extends JFrame {
         //layout
         dadosPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcDados = new GridBagConstraints();
-        gbcDados.insets = new Insets(1, 1, 1, 1);
+        Insets insets = new Insets(1, 1, 1, 1);
         gbcDados.weightx = 0.5;
         gbcDados.gridwidth = 1;
         gbcDados.gridheight = 1;
@@ -174,66 +177,34 @@ public class FramePlanoAlimento extends JFrame {
         // GRID DO PAINEL DADOS
 
         //nome
-        gbcDados.gridx = 0;
-        gbcDados.gridy = 0;
-        gbcDados.gridwidth = 2;
-        dadosPanel.add(consultaPaciente, gbcDados);
-
-        gbcDados.gridwidth = 1;
+        dadosPanel.add(consultaPaciente, configurarConstraints(gbcDados,0,0,2,1,0.7,1, insets));
 
         //sexo
-        gbcDados.gridx = 2;
-        gbcDados.gridy = 0;
-        dadosPanel.add(label[2], gbcDados);
+        dadosPanel.add(label[2], configurarConstraints(gbcDados,2,0,1,1,0.3,1, insets));
 
         //idade
-        gbcDados.gridx = 3;
-        gbcDados.gridy = 0;
-        dadosPanel.add(label[3], gbcDados);
+        dadosPanel.add(label[3], configurarConstraints(gbcDados,3,0,1,1,0.3,1, insets));
 
         //imc
-        gbcDados.gridx = 0;
-        gbcDados.gridy = 1;
-        dadosPanel.add(label[4], gbcDados);
-
-
-        gbcDados.gridx = 1;
-        gbcDados.gridy = 1;
-        dadosPanel.add(label[11], gbcDados);
+       dadosPanel.add(label[4], configurarConstraints(gbcDados,0,1,2,1,0.7,1, insets));
 
         //peso
-        gbcDados.gridx = 2;
-        gbcDados.gridy = 1;
-        dadosPanel.add(label[5], gbcDados);
+        dadosPanel.add(label[5], configurarConstraints(gbcDados,2,1,1,1,0.3,1, insets));
 
         //altura
-        gbcDados.gridx = 3;
-        gbcDados.gridy = 1;
-        dadosPanel.add(label[6], gbcDados);
+        dadosPanel.add(label[6], configurarConstraints(gbcDados,3,1,1,1,0.3,1, insets));
 
         //objetivo
-        gbcDados.gridx = 0;
-        gbcDados.gridy = 2;
-        gbcDados.gridwidth = 2;
-        dadosPanel.add(label[7], gbcDados);
+        dadosPanel.add(label[7], configurarConstraints(gbcDados,0,2,2,1,0.5,1, insets));
 
         //atividade
-        gbcDados.gridx = 2;
-        gbcDados.gridy = 2;
-        gbcDados.gridwidth = 2;
-        dadosPanel.add(label[8], gbcDados);
+        dadosPanel.add(label[8], configurarConstraints(gbcDados,2,2,2,1,0.5,1, insets));
 
         //TMB
-        gbcDados.gridx = 0;
-        gbcDados.gridy = 3;
-        gbcDados.gridwidth = 2;
-        dadosPanel.add(label[9], gbcDados);
+        dadosPanel.add(label[9], configurarConstraints(gbcDados,0,3,2,1,0.5,1, insets));
 
         //GET
-        gbcDados.gridx = 2;
-        gbcDados.gridy = 3;
-        gbcDados.gridwidth = 2;
-        dadosPanel.add(label[10], gbcDados);
+        dadosPanel.add(label[10], configurarConstraints(gbcDados,2,3,2,1,0.5,1, insets));
 
         return dadosPanel;
     }
@@ -288,14 +259,14 @@ public class FramePlanoAlimento extends JFrame {
 
         ////////////////////////
         // GRID DO PAINEL BUTTON
-        buttonPanel.add(button[0]);
-        buttonPanel.add(button[1]);
-        buttonPanel.add(button[2]);
-        buttonPanel.add(button[3]);
+        buttonPanel.add(button[0]); //salvar
+        buttonPanel.add(button[1]); //limpar
+        buttonPanel.add(button[2]); //remover
+
 
         return buttonPanel;
     }
-    public JScrollPane tabela(){
+    public DefaultTableModel modelTabela(){
         String [] colunas = {"Nome do alimento", "Quantidade (g)", "Kcal/100g"};
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
@@ -314,9 +285,9 @@ public class FramePlanoAlimento extends JFrame {
                 return false;
             }
         };
-
-        JTable tabelaAlimentos = new JTable(model);
-
+        return model;
+    }
+    public JScrollPane tabela(){
         tabela.setViewportView(tabelaAlimentos);
         tabela.setBackground(Color.RED);
         tabela.setMinimumSize(new Dimension(400, 170));
@@ -327,7 +298,8 @@ public class FramePlanoAlimento extends JFrame {
         backPanel.setBackground(transparente);
         //backPane.setPreferredSize(new Dimension(400, 30));
         backPanel.setLayout(new FlowLayout());
-        backPanel.add(button[4], FlowLayout.LEFT);
+        backPanel.add(button[4]); //voltar
+        backPanel.add(button[3]); //atualizar
 
         return backPanel;
     }
@@ -490,10 +462,10 @@ public class FramePlanoAlimento extends JFrame {
             button[i] = new JButton();
             //button[i].setPreferredSize(new Dimension(150, 20));
         }
-        button[0].setText("Adicionar");
+        button[0].setText("Salvar");
         button[1].setText("Limpar");
         button[2].setText("Remover");
-        button[3].setText("Atualizar");
+        button[3].setText("Atualizar tabela");
         button[4].setText("Voltar");
     }
 
@@ -507,8 +479,10 @@ public class FramePlanoAlimento extends JFrame {
         dadosPanel = dadosPanel();
         imputPanel = imputPanel();
         buttonPanel = buttonPanel();
-        tabela = tabela();
         backPanel = backPanel();
+        tabela = tabela();
+        modelTabela = modelTabela();
+        tabelaAlimentos.setModel(modelTabela);
         consultaPaciente = consultaPaciente();
         consultaAlimento = consultaAlimento();
     }
