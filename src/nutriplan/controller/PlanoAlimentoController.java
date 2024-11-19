@@ -22,7 +22,7 @@ public class PlanoAlimentoController {
     }
 
     public ArrayList<PlanoAlimento> listarPlanoAlimentos(int codPlano) throws ExceptionDAO{
-        return new PlanoAlimento().listaPlanoAlimentos(codPlano);
+        return new PlanoAlimento().listarPlanoAlimentos(codPlano);
     }
 
     public static boolean alterarPlanoAlimento(int codComida, int codPlano, double kcalComida, double gramasComida) throws ExceptionDAO {

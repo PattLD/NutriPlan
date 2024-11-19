@@ -71,7 +71,7 @@ public class PlanoAlimento {
         new PlanoAlimentoDAO().montarPlanoAlimento(planoAlimento);
     }
 
-    public ArrayList<PlanoAlimento> listaPlanoAlimentos(int codPlano) throws ExceptionDAO {
+    public ArrayList<PlanoAlimento> listarPlanoAlimentos(int codPlano) throws ExceptionDAO {
         return new PlanoAlimentoDAO().listarPlanoAlimento(codPlano);
     }
 
