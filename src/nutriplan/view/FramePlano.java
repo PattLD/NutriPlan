@@ -1,7 +1,9 @@
 package nutriplan.view;
 
+import nutriplan.controller.AlimentoController;
 import nutriplan.controller.Conversao;
 import nutriplan.controller.PlanoController;
+import nutriplan.dao.ExceptionDAO;
 import nutriplan.view.consulta.FrameConsultaPaciente;
 import nutriplan.view.consulta.FrameConsultaPlano;
 
@@ -12,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static nutriplan.view.Style.*;
 
@@ -53,6 +57,7 @@ public class FramePlano extends JFrame {
         voltar();
         consultar();
         limpar();
+        deletar();
         salvar();
 
         // Frame
@@ -207,6 +212,7 @@ public class FramePlano extends JFrame {
         backPanel.add(button[1]);
         backPanel.add(button[2]);
         backPanel.add(button[3]);
+        backPanel.add(button[4]);
 
         return backPanel;
     }
@@ -311,7 +317,8 @@ public class FramePlano extends JFrame {
         button[0].setText("Voltar");
         button[1].setText("Consultar");
         button[2].setText("Limpar");
-        button[3].setText("Salvar");
+        button[3].setText("Deletar");
+        button[4].setText("Salvar");
     }
 
     // AÇÕES
@@ -386,11 +393,31 @@ public class FramePlano extends JFrame {
             }
         });
     }
+
     public void limpar() {
         button[2].addActionListener(e -> limparTela());
     }
-    public void salvar(){
+    public void deletar(){
         button[3].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                boolean sucesso;
+                PlanoController planoController = new PlanoController();
+                try {
+                    sucesso = planoController.apagarPlano(FramePlano.this.codPlano);
+                    if (sucesso){
+                        JOptionPane.showMessageDialog(null, "Plano apagado com sucesso!");
+                        FramePlano.this.limparTela();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erro ao apagar o plano. Por favor, selecione um plano!");
+                    }
+                } catch (ExceptionDAO ex) {
+                    Logger.getLogger(FrameAlimento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+    public void salvar(){
+        button[4].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 PlanoController planoController = new PlanoController();
 

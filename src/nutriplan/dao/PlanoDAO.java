@@ -1,5 +1,6 @@
 package nutriplan.dao;
 
+import nutriplan.model.Alimento;
 import nutriplan.model.Paciente;
 import nutriplan.model.Plano;
 
@@ -133,6 +134,52 @@ public class PlanoDAO {
                 throw new ExceptionDAO("Erro ao fechar o conexão: " + e.getMessage());
             }
 
+        }
+    }
+
+    public void apagarPlano(Plano plano) throws ExceptionDAO {
+        String sql = "DELETE FROM plano WHERE id_plano=?";
+        PreparedStatement pStatement = null;
+        Connection connection = null;
+
+        try {
+            connection = new ConnectionDAO().getConnection();
+            connection.setAutoCommit(false);
+
+            pStatement = connection.prepareStatement(sql);
+            pStatement.setInt(1, plano.getCodPlano());
+            pStatement.executeUpdate();
+            pStatement.close();
+
+            // Confirmar a transação
+            connection.commit();
+
+        } catch (SQLException e) {
+            // Reverter a transação em caso de erro
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackEx) {
+                    throw new ExceptionDAO("Erro ao reverter a transação: " + rollbackEx.getMessage());
+                }
+            }
+            throw new ExceptionDAO("Erro ao deletar o alimento: " + e.getMessage());
+        } finally {
+            // Fechar os recursos
+            try {
+                if (pStatement != null) {
+                    pStatement.close();
+                }
+            } catch (SQLException e) {
+                throw new ExceptionDAO("Erro ao fechar Statement: " + e.getMessage());
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new ExceptionDAO("Erro ao fechar a conexão: " + e.getMessage());
+            }
         }
     }
 

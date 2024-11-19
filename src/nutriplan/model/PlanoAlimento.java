@@ -3,6 +3,8 @@ package nutriplan.model;
 import nutriplan.dao.ExceptionDAO;
 import nutriplan.dao.PlanoAlimentoDAO;
 
+import java.util.ArrayList;
+
 public class PlanoAlimento {
 
     private double gramasComida;
@@ -68,4 +70,21 @@ public class PlanoAlimento {
     public static void montarPlanoAlimento(PlanoAlimento planoAlimento) throws ExceptionDAO {
         new PlanoAlimentoDAO().montarPlanoAlimento(planoAlimento);
     }
+
+    public ArrayList<PlanoAlimento> listaPlanoAlimentos(int codPlano) throws ExceptionDAO {
+        return new PlanoAlimentoDAO().listarPlanoAlimento(codPlano);
+    }
+
+    public static void alterarPlanoAlimento(PlanoAlimento planoAlimento) throws ExceptionDAO {
+        new PlanoAlimentoDAO().alterarPlanoAlimento(planoAlimento);
+    }
+
+    public static void apagarPlanoAlimento(PlanoAlimento planoAlimento) throws ExceptionDAO {
+        new PlanoAlimentoDAO().apagarPlanoAlimento(planoAlimento);
+    }
+
+    public double somarCaloriasPlano(int codPlano) throws ExceptionDAO {
+        return new PlanoAlimentoDAO().somarCaloriasPlano(codPlano);
+    }
+
 }

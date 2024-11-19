@@ -62,4 +62,8 @@ public class Alimento {
     public ArrayList<Alimento> listarAlimentos(String nome) throws ExceptionDAO {
         return new AlimentoDAO().listarAlimentos(nome);
     }
+
+    public void apagarAlimento(Alimento alimento) throws ExceptionDAO {
+        new AlimentoDAO().apagarAlimento(alimento);
+    }
 }

@@ -2,21 +2,21 @@ package nutriplan.view;
 
 import nutriplan.controller.Conversao;
 import nutriplan.controller.PlanoAlimentoController;
+import nutriplan.dao.ExceptionDAO;
 import nutriplan.model.PlanoAlimento;
 import nutriplan.view.consulta.FrameConsultaAlimento;
-import nutriplan.view.consulta.FrameConsultaPaciente;
 import nutriplan.view.consulta.FrameConsultaPlano;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.crypto.Data;
 
 import static nutriplan.view.Style.*;
 
@@ -52,7 +52,13 @@ public class FramePlanoAlimento extends JFrame {
     JFormattedTextField[] txtdook = new JFormattedTextField[numTxtdook];
     JButton[] button = new JButton[numButton];
 
+    DecimalFormat df = new DecimalFormat("#.##");
+
     private MainFrame mainFrame;
+
+    boolean consultado;
+
+    ArrayList<PlanoAlimento> listaPlanoAlimentos;
 
     public FramePlanoAlimento(MainFrame mainFrame){
         this.mainFrame = mainFrame;
@@ -61,11 +67,13 @@ public class FramePlanoAlimento extends JFrame {
         inicializarComponentes();
 
         // Botões
+        clicarTabela();
 
         adicionar();
+        desmarcarPlano();
         limpar();
-        remover();
-        atualizar();
+        deletar();
+        botaoAtualizarTabela();
         voltar();
 
         // Frame
@@ -259,22 +267,22 @@ public class FramePlanoAlimento extends JFrame {
 
         ////////////////////////
         // GRID DO PAINEL BUTTON
-        buttonPanel.add(button[0]); //salvar
         buttonPanel.add(button[1]); //limpar
-        buttonPanel.add(button[2]); //remover
+        buttonPanel.add(button[2]); //deletar
+        buttonPanel.add(button[0]); //salvar
 
 
         return buttonPanel;
     }
     public DefaultTableModel modelTabela(){
-        String [] colunas = {"Nome do alimento", "Quantidade (g)", "Kcal/100g"};
+        String [] colunas = {"Nome do alimento", "Quantidade (g)", "Kcal/100g", "Calorias totais"};
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public Class<?> getColumnClass(int coluna) {
                 // Define o tipo de cada coluna
                 return switch (coluna) {
                     case 0 -> String.class;    // Nome do alimento
-                    case 1, 2 -> Double.class; // Quantidade e Kcal/100g
+                    case 1, 2, 3 -> Double.class; // Quantidade e Kcal/100g
                     default -> Object.class;
                 };
             }
@@ -300,6 +308,7 @@ public class FramePlanoAlimento extends JFrame {
         backPanel.setLayout(new FlowLayout());
         backPanel.add(button[4]); //voltar
         backPanel.add(button[3]); //atualizar
+        backPanel.add(button[5]); //Desmarcar Plano"
 
         return backPanel;
     }
@@ -463,10 +472,11 @@ public class FramePlanoAlimento extends JFrame {
             //button[i].setPreferredSize(new Dimension(150, 20));
         }
         button[0].setText("Salvar");
-        button[1].setText("Limpar");
+        button[1].setText("Limpar alimento");
         button[2].setText("Remover");
         button[3].setText("Atualizar tabela");
         button[4].setText("Voltar");
+        button[5].setText("Desmarcar Plano");
     }
 
     // AÇÕES
@@ -486,7 +496,34 @@ public class FramePlanoAlimento extends JFrame {
         consultaPaciente = consultaPaciente();
         consultaAlimento = consultaAlimento();
     }
-    public void limparTela(){
+    public void clicarTabela(){
+        tabelaAlimentos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedRow = tabelaAlimentos.getSelectedRow();
+
+
+                    // Verifica se uma linha válida foi selecionada
+                    if (selectedRow >= 0 && listaPlanoAlimentos !=null) {
+                        PlanoAlimento planoAlimentoSelecionado = listaPlanoAlimentos.get(selectedRow);
+
+                        buscarAlimento(
+                                planoAlimentoSelecionado.getAlimento().getCodAlimento(),
+                                planoAlimentoSelecionado.getAlimento().getNomeComida(),
+                                planoAlimentoSelecionado.getAlimento().getKcal100(),
+                                planoAlimentoSelecionado.getGramasComida()
+
+                        );
+                        consultado = true;
+                    }
+
+
+                }
+            }
+        });
+    }
+    public void limparTudo(){
         this.gramasComida = 0;
         this.kcal100 = 0;
         this.kcalComida = 0;
@@ -508,6 +545,14 @@ public class FramePlanoAlimento extends JFrame {
         txtdook[2].setText("");
         txtdook[5].setText("");
     }
+    public void limparAlimento(){
+        this.gramasComida = 0;
+        this.kcal100 = 0;
+        this.kcalComida = 0;
+        this.codComida = 0;
+        this.txtConsultaAlimento.setText("");
+        txtdook[2].setText("");
+    }
     public void fecharJanela(){
         this.dispose();
         if (mainFrame != null) {
@@ -526,15 +571,47 @@ public class FramePlanoAlimento extends JFrame {
         label[8].setText(atividade);
         label[9].setText(String.valueOf(TMB));
         label[10].setText(String.valueOf(GET));
-        txtdook[5].setText(String.valueOf(kcalNecessarias));
+        txtdook[5].setText(String.valueOf(df.format(kcalNecessarias)));
 
-
+        atualizarTabela();
     }
     public void buscarAlimento(int codComida, String nomeComida, double kcal100) {
         this.codComida = codComida;
         this.kcal100 = kcal100;
         this.txtConsultaAlimento.setText(nomeComida);
+        this.txtdook[2].setText("");
 
+    }
+    public void buscarAlimento(int codComida, String nomeComida, double kcal100, double quantidade) {
+        this.codComida = codComida;
+        this.kcal100 = kcal100;
+        this.txtConsultaAlimento.setText(nomeComida);
+        this.txtdook[2].setText(String.valueOf(quantidade));
+
+    }
+    public void atualizarTabela(){
+        modelTabela.setRowCount(0);
+        PlanoAlimentoController planoAlimentoController = new PlanoAlimentoController();
+        try {
+            listaPlanoAlimentos = planoAlimentoController.listarPlanoAlimentos(this.codPlano);
+            listaPlanoAlimentos.forEach((PlanoAlimento planoAlimento) -> {
+                modelTabela.addRow(new Object[]{
+                        planoAlimento.getAlimento().getNomeComida(),
+                        planoAlimento.getGramasComida(),
+                        planoAlimento.getAlimento().getKcal100(),
+                        planoAlimento.getKcalComida()
+                });
+            });
+
+            double caloriasAdicionadas = planoAlimentoController.somarCaloriasPlano(codPlano);
+            txtdook[1].setText(String.valueOf(df.format(caloriasAdicionadas)));
+            double caloriasTotais = Conversao.converterDouble(txtdook[5]);
+            double caloriasRestantes = caloriasTotais - caloriasAdicionadas;
+            txtdook[3].setText(String.valueOf(df.format(caloriasRestantes)));
+
+        } catch (ExceptionDAO evt) {
+            Logger.getLogger(FramePlanoAlimento.class.getName()).log(Level.SEVERE, null, evt);
+        }
     }
 
     // BOTOES
@@ -560,11 +637,18 @@ public class FramePlanoAlimento extends JFrame {
                 boolean sucesso;
 
                 try {
-                    sucesso = planoAlimentoController.montarPlanoAlimento(codComida,codPlano,kcalComida,gramasComida);
+                    if(consultado = false) {
+                        sucesso = planoAlimentoController.montarPlanoAlimento(codComida,codPlano,kcalComida,gramasComida);
+                    } else {
+                        sucesso = planoAlimentoController.alterarPlanoAlimento(codComida,codPlano,kcalComida,gramasComida);
+                    }
+
 
                     if(sucesso){
                         JOptionPane.showMessageDialog(null,"O plano foi cadastrado com sucesso!");
-                        limparTela();
+                        limparAlimento();
+                        atualizarTabela();
+                        consultado = false;
                     } else {
                         JOptionPane.showMessageDialog(null,"Os campos não foram preenchidos corretamente.");
                     }
@@ -572,30 +656,37 @@ public class FramePlanoAlimento extends JFrame {
                     JOptionPane.showMessageDialog(null,"Erro: " + ex.getMessage());
                 }
 
-
             }
         });
     }
     public void limpar(){
-        button[1].addActionListener(e -> limparTela());
+        button[1].addActionListener(e -> limparAlimento());
     }
-    public void remover(){
+    public void desmarcarPlano(){
+        button[5].addActionListener(e -> limparTudo());
+    }
+    public void deletar(){
         button[2].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
-
-
+                boolean sucesso;
+                PlanoAlimentoController planoAlimentoController = new PlanoAlimentoController();
+                try {
+                    sucesso = planoAlimentoController.apagarPlanoAlimento(FramePlanoAlimento.this.codComida, FramePlanoAlimento.this.codPlano);
+                    if (sucesso) {
+                        JOptionPane.showMessageDialog(null, "Alimento apagado com sucesso!");
+                        FramePlanoAlimento.this.limparAlimento();
+                        FramePlanoAlimento.this.atualizarTabela();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erro ao apagar o alimento. Por favor, selecione um alimento!");
+                    }
+                } catch (ExceptionDAO ex) {
+                    Logger.getLogger(FrameAlimento.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
-    public void atualizar(){
-        button[3].addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-
-
-            }
-        });
+    public void botaoAtualizarTabela(){
+        button[3].addActionListener(e -> atualizarTabela());
     }
     public void voltar(){
         button[4].addActionListener(new ActionListener() {

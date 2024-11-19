@@ -2,7 +2,6 @@ package nutriplan.controller;
 
 import nutriplan.dao.ExceptionDAO;
 import nutriplan.model.Alimento;
-import nutriplan.model.Alimento;
 
 import java.util.ArrayList;
 
@@ -36,5 +35,16 @@ public class AlimentoController {
 
     public ArrayList<Alimento> listarAlimentos(String nome) throws ExceptionDAO{
         return new Alimento().listarAlimentos(nome);
+    }
+
+    public boolean apagarAlimento(int codAlimento) throws ExceptionDAO{
+        if(codAlimento == 0){
+            return false;
+        } else {
+            Alimento alimento = new Alimento();
+            alimento.setCodAlimento(codAlimento);
+            alimento.apagarAlimento(alimento);
+            return true;
+        }
     }
 }

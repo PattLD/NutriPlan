@@ -117,4 +117,57 @@ public class AlimentoDAO {
 
     }
 
+    public void apagarAlimento(Alimento alimento) throws ExceptionDAO {
+        String deletePlanoAlimentoSQL = "DELETE FROM plano_alimento WHERE id_alimento=?";
+        String deleteAlimentoSQL = "DELETE FROM alimento WHERE id_alimento=?";
+        PreparedStatement pStatement = null;
+        Connection connection = null;
+
+        try {
+            connection = new ConnectionDAO().getConnection();
+            connection.setAutoCommit(false);
+
+            // Excluir registros relacionados na tabela plano_alimento
+            pStatement = connection.prepareStatement(deletePlanoAlimentoSQL);
+            pStatement.setInt(1, alimento.getCodAlimento());
+            pStatement.executeUpdate();
+            pStatement.close();
+
+            // Excluir o registro do alimento
+            pStatement = connection.prepareStatement(deleteAlimentoSQL);
+            pStatement.setInt(1, alimento.getCodAlimento());
+            pStatement.executeUpdate();
+
+            // Confirmar a transação
+            connection.commit();
+
+        } catch (SQLException e) {
+            // Reverter a transação em caso de erro
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackEx) {
+                    throw new ExceptionDAO("Erro ao reverter a transação: " + rollbackEx.getMessage());
+                }
+            }
+            throw new ExceptionDAO("Erro ao deletar o alimento: " + e.getMessage());
+        } finally {
+            // Fechar os recursos
+            try {
+                if (pStatement != null) {
+                    pStatement.close();
+                }
+            } catch (SQLException e) {
+                throw new ExceptionDAO("Erro ao fechar Statement: " + e.getMessage());
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new ExceptionDAO("Erro ao fechar a conexão: " + e.getMessage());
+            }
+        }
+    }
+
 }

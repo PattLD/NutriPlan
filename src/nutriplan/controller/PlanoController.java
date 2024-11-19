@@ -38,5 +38,17 @@ public class PlanoController {
         }
 
     }
+
+    public static boolean apagarPlano(int codPlano) throws ExceptionDAO {
+        if(codPlano == 0){
+            return false;
+        } else{
+            Plano plano = new Plano();
+            plano.setCodPlano(codPlano);
+            plano.apagarPlano(plano);
+            return true;
+        }
+
+    }
 }
 

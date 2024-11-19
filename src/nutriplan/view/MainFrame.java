@@ -2,6 +2,8 @@ package nutriplan.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -23,60 +25,10 @@ public class MainFrame extends JFrame {
         // Elementos
         inicializarComponentes();
 
-        JMenuBar menu = new JMenuBar();
-
-        // create a menu
-        JMenu paciente = new JMenu("Paciente");
-        JMenu plano = new JMenu("Plano Alimentar");
-        JMenu alimentos = new JMenu("Alimento");
-
-        JMenu cadastrarPlano = new JMenu("Cadastrar");
-        JMenu montarPlano = new JMenu("Montar");
-
-        menu.add(paciente);
-        menu.add(plano);
-        menu.add(alimentos);
-
-        plano.add(cadastrarPlano);
-        plano.add(montarPlano);
-
-        paciente.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                MainFrame.this.setVisible(false);
-                FramePaciente framePaciente = new FramePaciente(MainFrame.this); // Exemplo de Frame
-                framePaciente.setVisible(true);
-            }
-        });
-
-        montarPlano.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                MainFrame.this.setVisible(false);
-                FramePlanoAlimento framePlanoAlimento = new FramePlanoAlimento(MainFrame.this);
-                framePlanoAlimento.setVisible(true);
-            }
-        });
-
-        cadastrarPlano.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                MainFrame.this.setVisible(false);
-                FramePlano framePlano = new FramePlano(MainFrame.this);
-                framePlano.setVisible(true);
-            }
-        });
-
-        alimentos.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                MainFrame.this.setVisible(false);
-                FrameAlimento frameAlimentos = new FrameAlimento(MainFrame.this);
-                frameAlimentos.setVisible(true);
-            }
-        });
-
-        this.setJMenuBar(menu);
+        cadastroPacientes();
+        cadastroPlanos();
+        montagemPlanos();
+        cadastroAlimentos();
 
         // Frame
         this.setTitle("NutriPlan");
@@ -97,9 +49,14 @@ public class MainFrame extends JFrame {
         mainPanel.setBackground(verde);
         mainPanel.setSize(700, 650);
         mainPanel.setBorder(PADDING);
-        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setLayout(new GridBagLayout());
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+                loweredbevel,
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        GridBagConstraints gbc = new GridBagConstraints();
+        mainPanel.add(logoPanel, configurarConstraints(gbc,0,0,1,1,1,0.7, new Insets(5,5,5,5)));
+        mainPanel.add(menuPanel, configurarConstraints(gbc,0,1,1,1,1,0.3, new Insets(5,6,5,6)));
 
-        mainPanel.add(logoPanel, BorderLayout.CENTER);
         return mainPanel;
     }
 
@@ -122,17 +79,11 @@ public class MainFrame extends JFrame {
         menuPanel.setBackground(transparente);
         menuPanel.setBorder(loweredbevel);
         //layout
-        menuPanel.setLayout(new GridBagLayout());
-        menuPanel.setBorder(BorderFactory.createCompoundBorder(
-                loweredbevel,
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        GridBagConstraints gbcForms = new GridBagConstraints();
-        gbcForms.insets = new Insets(1, 5, 1, 5);
-        gbcForms.gridwidth = 1;
-        gbcForms.gridheight = 1;
-        gbcForms.fill = GridBagConstraints.BOTH; // Permite preencher horizontalmente
-        gbcForms.anchor = GridBagConstraints.WEST;
-
+        menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        menuPanel.add(button[0]); //Cadastro de Pacientes
+        menuPanel.add(button[1]); //Cadastro de Planos
+        menuPanel.add(button[2]); //Montagem de Planos
+        menuPanel.add(button[3]); //Cadastro de Alimentos
 
         return menuPanel;
     }
@@ -143,23 +94,6 @@ public class MainFrame extends JFrame {
             label[i].setFont(FONT_REGULAR_12);
             label[i].setHorizontalAlignment(SwingConstants.LEFT);
         }
-
-        label[0].setText("Cadastro de Pacientes");
-        label[0].setForeground(Color.WHITE);  // Cor do texto
-        label[0].setFont(FONT_BOLD_12);
-        label[0].setHorizontalAlignment(SwingConstants.CENTER);
-        label[0].setOpaque(true);
-        label[0].setBackground(Style.verdeEscuro);
-        label[0].setBorder(loweredbevel);
-
-        label[1].setText("Nome completo");
-        label[2].setText("CPF");
-        label[3].setText("Sexo");
-        label[4].setText("Data de Nascimento");
-        label[5].setText("Altura");
-        label[6].setText("Peso");
-        label[7].setText("Nivel de atividade");
-        label[8].setText("Objetivo:");
     }
 
     public void txtdook(){
@@ -167,23 +101,6 @@ public class MainFrame extends JFrame {
             txtdook[i] = new JFormattedTextField();
             //txtdook[i].setPreferredSize(new Dimension(50, 30));
         }
-
-        txtdook[1] = criarCPFField();
-        txtdook[2] = criarDataField();
-        txtdook[3] = criarAlturaField();
-        //txtdook[4] = criarPesoField();
-
-        txtObjetivo.setLineWrap(true); // Quebra de linha automática
-        txtObjetivo.setWrapStyleWord(true); // Quebra por palavras
-
-        // Ajusta a fonte para manter um estilo similar ao JTextField
-        txtObjetivo.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        // Adiciona uma borda com aparência de JTextField
-        txtObjetivo.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 1), // Borda externa cinza
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
     }
 
     public void button(){
@@ -191,8 +108,10 @@ public class MainFrame extends JFrame {
             button[i] = new JButton();
             //button[i].setPreferredSize(new Dimension(150, 20));
         }
-        button[0].setText("Voltar");
-        button[1].setText("Cadastro");
+        button[0].setText("Cadastro de Pacientes");
+        button[1].setText("Cadastro de Planos");
+        button[2].setText("Montagem de Planos");
+        button[3].setText("Cadastro de Alimentos");
     }
 
 // AÇÕES
@@ -204,7 +123,45 @@ public class MainFrame extends JFrame {
 
         mainPanel = mainPanel();
         logoPanel = logoPanel();
+        menuPanel = menuPanel();
 
+    }
+
+    public void cadastroPacientes() {
+        button[0].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.this.setVisible(false);
+                FramePaciente framePaciente = new FramePaciente(MainFrame.this);
+                framePaciente.setVisible(true);
+            }
+        });
+    }
+    public void cadastroPlanos(){
+        button[1].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.this.setVisible(false);
+                FramePlano framePlano = new FramePlano(MainFrame.this);
+                framePlano.setVisible(true);
+            }
+        });
+    }
+    public void montagemPlanos(){
+        button[2].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.this.setVisible(false);
+                FramePlanoAlimento framePlanoAlimento = new FramePlanoAlimento(MainFrame.this);
+                framePlanoAlimento.setVisible(true);
+            }
+        });
+    }
+    public void cadastroAlimentos(){
+        button[3].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.this.setVisible(false);
+                FrameAlimento frameAlimentos = new FrameAlimento(MainFrame.this);
+                frameAlimentos.setVisible(true);
+            }
+        });
     }
 
     public static void main(String[] args) {

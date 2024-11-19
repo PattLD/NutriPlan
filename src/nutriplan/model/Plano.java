@@ -1,5 +1,6 @@
 package nutriplan.model;
 
+import nutriplan.dao.AlimentoDAO;
 import nutriplan.dao.ExceptionDAO;
 import nutriplan.dao.PacienteDAO;
 import nutriplan.dao.PlanoDAO;
@@ -84,6 +85,9 @@ public class Plano {
         new PlanoDAO().alterarPlano(plano);
     }
 
+    public void apagarPlano(Plano plano) throws ExceptionDAO {
+        new PlanoDAO().apagarPlano(plano);
+    }
 
 //    public void montarDieta() {
 //        while (kcalAdicionado < kcalNecessarias) {

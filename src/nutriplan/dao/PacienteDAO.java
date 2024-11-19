@@ -146,6 +146,8 @@ public class PacienteDAO {
 
         try {
             connection = new ConnectionDAO().getConnection();
+            connection.setAutoCommit(false);
+
             // Exclui os registros da tabela planoAlimento
             pStatement = connection.prepareStatement(deletePlanoAlimentoSQL);
             pStatement.setInt(1, paciente.getCodPaciente());
@@ -163,8 +165,18 @@ public class PacienteDAO {
             pStatement.setInt(1, paciente.getCodPaciente());
             pStatement.executeUpdate();
 
-            pStatement.executeUpdate();
+            // Confirmar a transação
+            connection.commit();
+
         } catch (SQLException e){
+            // Reverter a transação em caso de erro
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackEx) {
+                    throw new ExceptionDAO("Erro ao reverter a transação: " + rollbackEx.getMessage());
+                }
+            }
             throw new ExceptionDAO("Erro ao deletar o paciente: " + e.getMessage());
         } finally {
 

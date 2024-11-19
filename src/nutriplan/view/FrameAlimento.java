@@ -2,6 +2,8 @@ package nutriplan.view;
 
 import nutriplan.controller.AlimentoController;
 import nutriplan.controller.Conversao;
+import nutriplan.controller.PacienteController;
+import nutriplan.dao.ExceptionDAO;
 import nutriplan.view.consulta.FrameConsultaAlimento;
 
 import javax.swing.*;
@@ -10,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static nutriplan.view.Style.*;
 
@@ -228,7 +232,25 @@ public class FrameAlimento extends JFrame {
     public void limpar() {
         button[2].addActionListener(e -> limparTela());
     }
-    public void deletar(){}
+    public void deletar(){
+        button[3].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                boolean sucesso;
+                AlimentoController alimentoController = new AlimentoController();
+                try {
+                    sucesso = alimentoController.apagarAlimento(FrameAlimento.this.codComida);
+                    if (sucesso){
+                        JOptionPane.showMessageDialog(null, "Alimento apagado com sucesso!");
+                        FrameAlimento.this.limparTela();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erro ao apagar o alimento. Por favor, selecione um alimento!");
+                    }
+                } catch (ExceptionDAO ex) {
+                    Logger.getLogger(FrameAlimento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
     public void salvar(){
         button[4].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
