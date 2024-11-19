@@ -637,7 +637,7 @@ public class FramePlanoAlimento extends JFrame {
                 boolean sucesso;
 
                 try {
-                    if(consultado = false) {
+                    if(consultado == false) {
                         sucesso = planoAlimentoController.montarPlanoAlimento(codComida,codPlano,kcalComida,gramasComida);
                     } else {
                         sucesso = planoAlimentoController.alterarPlanoAlimento(codComida,codPlano,kcalComida,gramasComida);

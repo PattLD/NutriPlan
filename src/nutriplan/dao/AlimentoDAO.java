@@ -16,8 +16,7 @@ public class AlimentoDAO {
         Connection connection = null;
 
         try {
-            connection = new ConnectionDAO().getConnection();
-            pStatement = connection.prepareStatement(sql);
+            connection = new ConnectionDAO().getConnection();pStatement = connection.prepareStatement(sql);
             pStatement.setString(1, alimento.getNomeComida());
             pStatement.setDouble(2, alimento.getKcal100());
 
@@ -99,6 +98,7 @@ public class AlimentoDAO {
             pStatement.setInt(3, alimento.getCodAlimento());
 
             pStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e){
             throw new ExceptionDAO("\"Erro ao alterar o alimento: " + e.getMessage());
         } finally {
