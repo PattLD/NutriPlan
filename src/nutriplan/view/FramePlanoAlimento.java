@@ -663,7 +663,12 @@ public class FramePlanoAlimento extends JFrame {
         button[1].addActionListener(e -> limparAlimento());
     }
     public void desmarcarPlano(){
-        button[5].addActionListener(e -> limparTudo());
+        button[5].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                limparTudo();
+                atualizarTabela();
+            }
+        });
     }
     public void deletar(){
         button[2].addActionListener(new ActionListener() {
