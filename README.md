@@ -25,13 +25,13 @@ O desenvolvimento do NutriPlan aplicou conceitos avançados de programação e p
 
 ## 📸 Screenshots
 
-Aqui estão algumas imagens da interface do NutriPlan:
-
 **Cadastro de Plano:**
+
 ![image](https://github.com/user-attachments/assets/33859942-aa03-4062-94e4-f18a088bb397)
 
 
 **Dados do Paciente e Montagem do Plano Alimentar:**
+
 ![image](https://github.com/user-attachments/assets/2dfa3b5f-8fb0-4245-82d4-219aafc7254b)
 
 
