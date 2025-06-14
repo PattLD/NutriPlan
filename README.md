@@ -1,4 +1,4 @@
-# NutriPlan: Sistema de Gerenciamento para Nutricionistas 🍏📊
+# 🍏 NutriPlan: Sistema de Gerenciamento para Nutricionistas 
 
 Um sistema acadêmico completo desenvolvido em Java, focado em auxiliar nutricionistas no gerenciamento eficiente de seus pacientes, na criação de planos alimentares personalizados e no acompanhamento do progresso. O projeto foi desenvolvido para atender à necessidade de uma ferramenta prática, superando a dificuldade de integrar dados de avaliação nutricional e planos com o uso de planilhas.
 
