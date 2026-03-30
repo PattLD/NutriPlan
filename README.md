@@ -4,7 +4,7 @@ Um sistema acadêmico completo desenvolvido em Java, focado em auxiliar nutricio
 
 **Status do Projeto:** Concluído 🚀
 
-## ✨ Recursos Principais
+## Recursos Principais
 
 O NutriPlan oferece funcionalidades essenciais para otimizar a rotina de trabalho do nutricionista:
 
@@ -13,7 +13,7 @@ O NutriPlan oferece funcionalidades essenciais para otimizar a rotina de trabalh
 * **Criação e Montagem de Planos Alimentares Personalizados:** Funcionalidade para montar planos alimentares individualizados, associados a cada paciente, considerando suas necessidades nutricionais e metas. O sistema sugere refeições e ajusta quantidades com base em algoritmos de personalização.
 * **Interface Intuitiva (Java Swing):** Desenvolvida para ser simples e direta, facilitando o uso no dia a dia do nutricionista.
 
-## 💻 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 O desenvolvimento do NutriPlan aplicou conceitos avançados de programação e persistência de dados:
 
@@ -23,7 +23,7 @@ O desenvolvimento do NutriPlan aplicou conceitos avançados de programação e p
 * **Abstração de Dados:** DAO (Data Access Object) para interação segura e eficiente com o banco de dados.
 * **Padrão de Arquitetura:** Modelo-Visão-Controlador (MVC) para o frontend.
 
-## 📸 Screenshots
+## Screenshots
 
 **Cadastro de Plano:**
 
